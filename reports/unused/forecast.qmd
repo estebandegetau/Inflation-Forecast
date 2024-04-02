@@ -1,0 +1,565 @@
+---
+title: "Pronóstico de inflación"
+author: "Esteban Degetau"
+date: "`r Sys.Date()`"
+format: html
+execute:
+    echo: false
+    warning: false
+lang: es
+bibliography: references.bib
+nocite: |
+    @allen2022; @hyndman2021
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+rm(list = ls())
+gc()
+
+pacman::p_load(
+    tidyverse,
+    here,
+    labelled,
+    forecast,
+    gt,
+    gtsummary,
+    corrplot,
+    imputeTS,
+    olsrr
+)
+
+# Months to use for testing
+test_months <- 12 * 2
+
+# First date used
+start_date <- ymd(20000101)
+
+here::i_am("reports/forecast.qmd")
+
+theme_set(theme_minimal())
+
+```
+
+```{r}
+#| label: data
+#| include: false
+
+load(here::here("data/inputs.RData"))
+
+days_since_update <- (today() - as_date(updated_data) ) |>
+    as.numeric()
+
+if(days_since_update > 0) {
+
+    source(here::here("R/01_gather_data.R"))
+
+    load(here::here("data/inputs.RData"))
+
+}
+
+inputs <- inputs |>
+    relocate(infl_gen, .before = 1) 
+
+
+dictionary <- generate_dictionary(inputs) |>
+    as_tibble() |>
+    select(
+        Variable = variable,
+        `Descripción` = label
+    )
+
+long <- inputs |>
+    pivot_longer(
+        cols = c(!c("fecha"))
+    ) |>
+    drop_na() |>
+    arrange(name, fecha)
+
+# Input missing values with Kalman filter
+inputed <- inputs |>
+    filter(fecha >= start_date) |>
+    mutate(
+        across(
+            where(is.numeric),
+            na_kalman
+        ),
+        season = month(fecha)
+    ) 
+
+
+test_dates <- inputed |>
+    pull(fecha) |>
+    unique() |>
+    sort() |>
+    tail(test_months) 
+
+test <- inputed |>
+    filter(fecha %in% test_dates) 
+
+
+
+train <- inputed |>
+    anti_join(test, by = "fecha")     
+
+end_date <- max(inputed$fecha)
+
+full_ts <- inputed |>
+    select(-fecha) |>
+    as.ts(start = start_date, end = end_date)
+
+prediction_start <- test_dates[1]
+
+
+```
+
+```{r functions}
+
+
+
+plot_forecast <- function(prediction) {
+
+
+
+    forecast <- prediction |>
+        as_tibble() |>
+        mutate(fecha = sort(test_dates)) |>
+        rename(predicted = 1)
+
+    ggplot() +
+        geom_vline(xintercept = prediction_start, linetype = "dashed", alpha = 0.4) +
+        geom_line(
+            data = inputs,
+            aes(fecha, infl_gen, color = "Real")
+        ) +
+        geom_line(
+            data = forecast,
+            aes(fecha, predicted, color = "Pronóstico")
+        ) +
+        # Limit the x-axis to the test period
+        coord_cartesian(
+            xlim = c(ymd(20200101), max(test$fecha)),
+            ylim = c(0, 12)
+        ) +
+        labs(
+            x = "",
+            y = "Inflación",
+            color = ""
+        )
+}
+
+forecast_fit <- function(model, forecast) {
+    forecast <- forecast$mean
+
+    MAE <- mean(abs(forecast - test$infl_gen))
+    MedAE <- median(abs(forecast - test$infl_gen))
+    Max_Err <- max(abs(forecast - test$infl_gen))
+    # AIC <- AIC(model)
+    # BIC <- BIC(model)
+
+    tibble(
+        `Err. Abs. Medio` = MAE,
+        `Err. Abs. Mediano` = MedAE,
+        `Err. Máximo` = Max_Err
+        # AIC = AIC,
+        # BIC = BIC
+    )
+}
+```
+
+## Univariate forecast
+
+```{r}
+
+start_year <- inputs |>
+    select(fecha, infl_gen) |>
+    drop_na() |>
+    pull(fecha) |>
+    min() |>
+    year()
+
+start_month <- inputs |>
+    select(fecha, infl_gen) |>
+    drop_na() |>
+    pull(fecha) |>
+    min() |>
+    month()
+
+end_year <- inputs |>
+    select(fecha, infl_gen) |>
+    drop_na() |>
+    pull(fecha) |>
+    max() |>
+    year()
+
+end_month <- inputs |>
+    select(fecha, infl_gen) |>
+    drop_na() |>
+    pull(fecha) |>
+    max() |>
+    month()
+
+inf_ts <- inputs$infl_gen |>
+    ts(
+        start = c(start_year, start_month),
+        end = c(end_year, end_month)
+    
+    )
+
+inf_ts |>
+    forecast(h = 12) |>
+    autoplot()
+
+
+
+```
+
+
+## Datos
+
+```{r}
+#| label: tbl-summary
+#| tbl-cap: "Descripción de los datos"
+#| tbl-attr: 
+
+long |>
+    mutate(
+        ord = case_when(
+            name == "infl_gen" ~ 1,
+            T ~ 2
+        )
+    ) |>
+    group_by(name, ord) |>
+    summarise(
+        Min = min(value),
+        Mediana = median(value),
+        Prom = mean(value),
+        DE = sd(value),
+        Max = max(value),
+        Primero = min(fecha),
+        `Último` = max(fecha)
+    ) |>
+    ungroup() |>
+    rename(
+        Variable = name
+    ) |>
+    left_join(dictionary, by = "Variable") |>
+    arrange(ord, Variable) |>
+    select(!c(Variable, ord)) |>
+    select(Variable = Descripción, everything()) |>
+    gt() |>
+    fmt_number(
+        columns = 2:6,
+        decimals = 2
+    ) |>
+    tab_footnote(
+        "Variación porcentual anual."
+    ) |>
+    tab_source_note(
+        "Fuente: Datos de IMSS, INEGI y Banco de México."
+    )
+
+```
+
+## Correlación serial de la inflación
+
+```{r}
+#| label: fig-lagplot
+#| fig-cap: Correlación serial de la inflación
+
+ gglagplot(
+        x = inputs$infl_gen,
+        lags = 3,
+        seasonal = F
+    )
+
+```
+
+## Relación de la inflación con las variables macroeconómicas
+
+```{r}
+#| label: fig-corrplot
+#| fig-cap: "Matriz de correlación"
+
+corr_data <- inputs |>
+    select(!fecha) |>
+    drop_na() |>
+    cor()
+
+short_names <- dictionary |>
+    filter(!Variable == "fecha") |>
+    mutate(
+        Descripción = case_when(
+            str_detect(Descripción, "INPC|IGAE|INPP") ~ as.character(Descripción),
+            str_detect(Descripción, "TIIE") ~ "TIIE",
+            T ~ Descripción |>
+            str_to_lower() |>
+            str_remove_all("\\b(del|de|al)\\b") |>
+            str_remove_all("\\b\\w{1,2}\\b") |>
+            # Remove numbers
+            # str_remove_all("\\d") |>
+            # Remove everything inside parentheses
+            str_remove_all("\\(.*\\)") |>
+            str_squish() |>
+            str_to_upper() |>
+            str_extract_all("\\b\\w") |>            
+            # Turn list elements into a single string
+            map_chr(str_c, collapse = "") |>
+            str_to_upper()
+
+        )
+    ) |>
+    pull(Descripción)
+
+
+# short_names <- c(
+#     "ATP",
+#     "BM",
+#     "CC",
+#     "CE",
+#     "CI",
+#     "DP",
+#     "GP",
+#     "IGAE",
+#     "INPC",
+#     "PS",
+#     "PP",
+#     "PI",
+#     "TD",
+#     "TP",
+#     "T182",
+#     "T28",
+#     "T91",
+#     "TC"
+# )
+
+colnames(corr_data) <- short_names
+rownames(corr_data) <- short_names
+
+corrplot(corr_data,
+    method = "color")
+
+```
+
+```{r}
+#| label: fig-tiie
+#| fig-cap: "Relación de la inflación con la tasa de interés"
+
+inputs |>
+    ggplot(aes(fecha, infl_gen)) +
+    geom_line(aes(color = tiie_28)) +
+    scale_color_distiller(palette = "Spectral") +
+    labs(
+        x = "",
+        y = "Inflación general",
+        color = "TIIE"
+    )
+
+```
+
+```{r}
+#| label: fig-igae
+#| fig-cap: "Relación de la inflación con la actividad económica"
+
+inputs |>
+    ggplot(aes(fecha, infl_gen)) +
+    geom_line(aes(color = igae)) +
+    scale_color_distiller(palette = "Spectral") +
+    labs(
+        x = "",
+        y = "Inflación general",
+        color = "IGAE"
+    )
+
+```
+
+```{r}
+#| label: fig-m2
+#| fig-cap: "Relación de la inflación con la base monetaria"
+
+inputs |>
+    drop_na(base_monetaria) |>
+    ggplot(aes(fecha, infl_gen)) +
+    geom_line(aes(color = base_monetaria)) +
+    scale_color_distiller(palette = "Spectral") +
+    labs(
+        x = "",
+        y = "Inflación general",
+        color = "M2"
+    )
+
+```
+
+```{r}
+#| label: fig-cc
+#| fig-cap: "Relación de la inflación con la confianza del consumidor"
+
+inputs |>
+    drop_na(conf_cons) |>
+    ggplot(aes(fecha, infl_gen)) +
+    geom_line(aes(color = conf_cons)) +
+    scale_color_viridis_c() +
+    labs(
+        x = "",
+        y = "Inflación general",
+        color = "Confianza consumidor"
+    )
+
+```
+
+## OLS
+
+### Predicción ex-post
+
+```{r ols}
+#| include: false
+
+ols <- lm(
+    infl_gen ~ .,
+    data = train |> select(-fecha)
+)
+
+
+ols_fw <- ols_step_forward_p(ols)
+ols_fw_model <- ols_fw$model
+
+ols_bw <- ols_step_backward_p(ols)
+ols_bw_model <- ols_bw$model
+
+ols_models <- tibble(
+    model = list(ols, ols_fw_model, ols_bw_model),
+    name = c("OLS", "Best Forward", "Best Backward"),
+    forecast = map(model, forecast, h = test_months, newdata = test),
+    stats = map2(model, forecast, forecast_fit),
+    plot = map(forecast, plot_forecast),
+    AIC = map_dbl(model, AIC),
+    BIC = map_dbl(model, BIC)
+)
+
+
+```
+
+```{r}
+#| label: fig-ols
+#| fig-cap: "Pronóstico de inflación con OLS"
+#| fig-subcap:
+#|  - "Todas las variables"
+#|  - "Selección hacia adelante"
+#|  - "Selección hacia atrás"
+#| layout-ncol: 2
+
+
+ols_models |> pull(plot)  |> walk(print)
+
+```
+
+```{r}
+#| label: tbl-ols
+#| tbl-cap: "Comparación de modelos OLS"
+
+ols_models |>
+    select(name, stats, AIC, BIC) |>
+    unnest(stats) |>
+    rename(Modelo = name) |>
+    gt() |>
+    fmt_number(
+        columns = 2:6,
+        decimals = 2
+    ) 
+
+
+```
+
+### Predicción ex-ante
+
+
+
+## ARIMA
+
+```{r}
+#| label: fig-arima
+#| fig-cap: "Pronóstico de inflación con ARIMA"
+
+arima <- auto.arima(y = train$infl_gen, xreg = train |> select(-c(fecha, infl_gen)) |> as.matrix())
+
+arima_forecast <- forecast(arima, h = test_months, xreg = test |> select(-c(fecha, infl_gen)) |> as.matrix())
+
+arima_b<- auto.arima(y = train$infl_gen, xreg = train$season, lambda = "auto")
+
+arima_b_forecast <- forecast(arima_b, h = test_months, xreg = test$season)
+
+plot_forecast(arima_forecast$mean)
+
+plot_forecast(arima_b_forecast$mean)
+
+```
+
+## NNAR
+
+```{r}
+
+nnar <- nnetar(
+    train$infl_gen, 
+   xreg = train |> select(-c(fecha, infl_gen)) |> as.matrix(),
+    y_test = test$infl_gen)
+
+nnar_forecast <- forecast(
+    nnar,
+    xreg = test |> select(-c(fecha, infl_gen)) |> as.matrix(),
+    h = test_months)
+
+nnar_b <- nnetar(
+    train$infl_gen,
+    y_test = test$infl_gen) 
+
+nnar_b_forecast <- nnar_b |> 
+    forecast(h = test_months)
+
+plot_forecast(nnar_forecast$mean)
+
+plot_forecast(nnar_b_forecast$mean)
+
+```
+
+
+
+## Comparación de modelos
+
+```{r}
+#| label: tbl-comparison
+#| tbl-cap: "Comparación de modelos"
+#| eval: false
+
+models <- tibble(
+    model = list(
+        ols,
+        arima,
+        arima_b,
+        nnar
+    ),
+    prediction = list(
+        ols_forecast$mean,
+        arima_forecast$mean,
+        arima_b_forecast$mean,
+        nnar_forecast$mean
+    ),
+    name = c("OLS", "ARIMA", "ARIMA no cov", "NNAR"),
+    stats = map2(model, prediction, forecast_fit)
+)
+
+models |>
+    select(Modelo = name, stats) |>
+    unnest(stats) |>
+    gt() |>
+    fmt_number(
+        columns = 2:4,
+        decimals = 2
+    ) 
+
+
+```
+
+
+## Referencias

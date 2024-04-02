@@ -1,0 +1,504 @@
+---
+title: "Pronóstico de inflación"
+author: "Esteban Degetau"
+date: "`r Sys.Date()`"
+format: 
+  html:
+    other-links:
+      - text: Datos
+        href: data/forecasts.csv
+        icon: download
+execute:
+    echo: false
+    warning: false
+lang: es
+toc: false
+bibliography: references.bib
+nocite: |
+    @allen2022; @hyndman2021; @hamming1997; @hyndman2008; @banxico_sie
+---
+
+
+
+```{r}
+#| label: setup
+#| include: false
+
+rm(list = ls())
+gc()
+
+pacman::p_load(
+    tidyverse,
+    here,
+    labelled,
+    forecast,
+    gt,
+    gtsummary,
+    corrplot,
+    imputeTS,
+    olsrr,
+    plotly,
+    webshot2
+)
+
+
+here::i_am("reports/monthly_forecast.qmd")
+
+theme_set(theme_minimal())
+
+```
+
+```{r}
+#| label: load-data
+#| include: false
+
+load(here::here("data/inputs.RData"))
+
+days_since_update <- (today() - as_date(updated_data) ) |>
+    as.numeric()
+
+if(days_since_update > 7) {
+
+    source(here::here("R/00_run.R"))
+
+    load(here::here("data/inputs.RData"))
+
+    here::i_am("reports/forecast_v2.qmd")
+
+    theme_set(theme_minimal())
+
+} 
+
+load(here("data/models.RData"))
+
+last_obs <- inputs |>
+    drop_na(infl_mensual) |>
+    pull(fecha) |>
+    max()
+
+train_months <- timeline |>
+  filter(kind == "Train") |>
+  pull(fecha)
+
+test_months <- timeline |>
+  filter(kind == "Test") |>
+  pull(fecha)
+
+predict_months <- timeline |>
+  filter(str_detect(kind, "Predict")) |>
+  pull(fecha)
+ 
+h <- length(predict_months)
+
+```
+
+```{r}
+#| label: models
+#| include: false
+
+
+
+model_names <- models |> pull(name) |>
+    str_c(collapse = ", ") |>
+    # Replace last ", " with ", y "
+    str_replace_all(", (?!.*,)", ", y ") |>
+    str_glue()
+
+```
+
+```{r functions}
+
+format_date <- function(date) {
+  
+  
+  date |>
+    as_date() |>
+    format("%B %Y")
+  
+  
+  
+}
+
+```
+
+
+## Modelos univariados
+
+Hay muchas maneras de predecir el futuro, lo que implica que ninguna es perfecta en todos los casos [@hamming1997]. Una manera de generar predicciones automáticamente es con modelos univariados, que solo utilizan una serie de tiempo como insumo de sus predicciones [@hyndman2008].
+
+En esta sección, comparamos los modelos `r model_names` para predecir la inflación mensual en México. De estos, el modelo ARIMA es el más conocido y utilizado en la literatura. Los modelos ETS y LM son menos conocidos, son útiles por ser más simples. Por último, el modelo NNETAR es un modelo de redes neuronales para series de tiempo que ha demostrado ser útil en la predicción de series de tiempo [@hyndman2021].
+
+### Probando los modelos
+
+Una manera de comparar distintos modelos de predicción es evaluar su precisión en un conjunto de datos externo; es decir, en un conjunto de datos que no se utilizó para ajustar los modelos. En este caso, utilizamos los datos de inflación mensual desde `r min(train_months) |> format_date()` hasta `r max(train_months) |> format_date()` para ajustar los modelos y los datos desde `r min(test_months) |> format_date()` hasta `r max(test_months) |> format_date()` para evaluar su precisión. 
+
+
+
+
+```{r}
+#| label: fig-test
+#| fig-cap: Prueba de los modelos
+
+
+test_forecasts <- models |>
+  mutate(
+    forecast = map(forecast, pluck, "mean"),
+    fecha = list(test_months |> as_date())
+  ) |>
+  select(name, forecast, fecha) |>
+  unnest(cols = !name) 
+
+a <- ggplot() +
+  geom_line(
+    data = test_forecasts,
+    aes(x = fecha, y = forecast, color = name),
+  ) +
+  geom_line(
+    data = inputs |> filter(fecha %in% test_months),
+    aes(x = fecha, y = infl_mensual, color = "Observado"),
+  ) +
+  geom_hline(yintercept = 0) +
+  labs(
+    x = "Período de prueba",
+    y = "Inflación mensual (%)",
+    color = ""
+  ) +
+  scale_color_viridis_d() +
+  scale_x_date(date_labels = "%b %Y", date_breaks = "4 month")
+
+a
+
+```
+
+La @fig-test muestra las predicciones de los modelos en el conjunto de prueba contra la inflación mensual observada. El modelo NNETAR parece ser el más preciso.
+
+
+
+```{r}
+#| label: tbl-comp
+#| tbl-cap: "Precisión de los modelos"
+#| tbl-subcap:
+#|  - Muestra de entrenamiento
+#|  - Muestra de prueba
+#| layout-ncol: 2
+
+
+outside <- models |>
+    select(Modelo = name, test) |>
+    unnest(test)
+
+
+inside <- models |>
+  select(name, inside_accuracy) |>
+  mutate(inside_accuracy = map(inside_accuracy, as_tibble)) |>
+  select(Modelo = name, inside_accuracy) |>
+  unnest(inside_accuracy) 
+  
+  
+best_inside <- inside |>
+    filter(RMSE == min(RMSE)) |>
+    pull(Modelo)
+
+
+
+best_outside <- outside |>
+    filter(RMSE == min(RMSE)) |>
+    pull(Modelo)
+
+
+final_model <- models |> filter(name == best_outside) 
+
+
+inside |>
+  select(1:5) |>
+  gt() |>
+  fmt_number(
+      columns = 2:5,
+      decimals = 2
+  )
+
+outside |>
+    gt() |>
+    fmt_number(
+        columns = 2:5,
+        decimals = 2
+    )
+
+
+
+
+```
+
+La @tbl-comp muestra algunas métricas de precisión de los pronósticos dentro y fuera de la muestra de entrenamiento.[^1] El modelo más preciso fue `r best_outside`, puesto que tuvo errores más pequeños.
+
+### Pronóstico ex-ante
+
+Sabiendo cuán precisos son los modelos, procedo a pronosticar la inflación mensual en México desde `r min(predict_months) |> format_date()` hasta `r max(predict_months) |> format_date()`. Solo para fines comparativos, utilizaré todos los modelos aunque el mejor fue `r best_outside`.
+
+La @fig-forecast muestra los pronósticos de los modelos para los siguientes `r h` meses. Algo importante para notar es que el modelo NNETAR (@fig-forecast-4) no produce intervalos de confianza, puesto que las predicciones por redes neuronales pierden interpretabilidad y no permiten tener una medida de la varianza de la predicción.
+
+
+```{r}
+#| label: fig-forecast
+#| fig-cap: Comparación de pronósticos
+#| fig-subcap: 
+#|   - ARIMA
+#|   - ETS
+#|   - LM
+#|   - NNETAR
+#| layout-ncol: 2
+
+plot_forecast <- function(forecast) {
+  
+  forecast |>
+    autoplot(
+      xlab = "Año",
+      ylab = "Inflación mensual (%)"
+    ) +
+    geom_hline(yintercept = 0, color = "grey") +
+    coord_cartesian(xlim = c(2022, 2026), ylim = c(-3, 4))
+  
+  
+}
+
+plots <- models |>
+  mutate(
+    plot = map(full_forecast, plot_forecast)
+  )
+
+plots |> pull(plot) |> walk(print)
+
+
+
+
+```
+
+```{r load-banxico}
+
+load(here::here("data/fcast_svy.RData"))
+
+mean_fcast <- fcast_svy |>
+    filter(stat == "Media", month %in% predict_months) 
+
+
+```
+
+Una manera de evaluar la precisión de los pronósticos ex-ante es con respecto a la encuesta de expectativas de inflación mensual del Banco de México (Banxico). La @fig-banxico muestra los pronósticos de los modelos para los siguientes 12 meses y los compara con la media de las respuestas de la encuesta.
+
+
+
+
+```{r}
+#| label: fig-banxico
+#| fig-cap: Pronóstico de inflación mensual a doce meses vs media de encuesta de expectativas Banxico
+
+final_forecasts <- models |>
+  mutate(
+    full_forecast = map(full_forecast, pluck, "mean"),
+    fecha = list(predict_months)
+  ) |>
+  select(name, full_forecast, fecha) |>
+  unnest(cols = !name) 
+
+a <- ggplot() +
+  geom_line(
+    data = final_forecasts |> filter(fecha %in% predict_months[1:12]),
+    aes(x = fecha, y = full_forecast, color = name),
+  ) +
+  geom_line(
+    data = mean_fcast,
+    aes(x = month, y = value, color = "Analistas (Media)"),
+  ) +
+  geom_hline(yintercept = 0) +
+  labs(
+    x = "",
+    y = "Inflación mensual (%)",
+    color = ""
+  ) +
+  scale_color_viridis_d() 
+
+a 
+
+```
+
+La @tbl-banxico muestra la precisión de los modelos en la muestra completa respecto a la media de las expectativas de los analistas de Banxico. Es importante notar que el mejor modelo en nuestra prueba no es el modelo más cercano a la madia de los los analistas, mas el error es bastante pequeño.
+
+```{r}
+#| label: tbl-banxico
+#| tbl-cap: Precisión de los modelos en la muestra completa respecto la media de analistas Banxico
+
+
+test_banxico <- function(forecast) {
+  forecast <- forecast |>
+    pluck("mean") |>
+    as.numeric()
+  forecast <- forecast[1:12]
+  
+  analysts_mean <- mean_fcast$value[1:12] |> as.numeric()
+  
+  error <- forecast - analysts_mean
+  
+  mae <- mean(abs(error))
+  rmse <- sqrt(mean(error ^ 2))
+  me <- mean(error)
+  mpe <- 100 * mean(error / analysts_mean)
+  
+  tibble(
+    ME = me,
+    RMSE = rmse,
+    MAE = mae,
+    MPE = mpe
+  )
+  
+  
+}
+
+models |>
+  mutate(
+    banxico_test = map(full_forecast, test_banxico)
+  ) |>
+  select(Modelo = name, banxico_test) |>
+  unnest(banxico_test) |>
+  gt() |>
+  fmt_number(
+    columns = 2:5,
+    decimals = 2
+  )
+  
+
+```
+
+## Poder predictivo de la encuesta de expectativas {#sec-survey}
+
+Esta sección evalúa la capacidad predictiva de la encuesta de expectativas de inflación del Banco de México. La @fig-expectations muestra que las predicciones intercuartílicas tienen el mismo desempeño en cuanto a los errores absolutos. La media y la mediana tienen un error medio cercano a cero hasta los seis meses de anticipación; a partir de ese punto, tienen un sesgo negativo. 
+
+Es importante destacar que los errores absolutos no son monotónicos; las mejores predicciones son con anticipaciones cercanas a 0 y a 12 meses. Las peores predicciones son a seis meses de anticipación.
+
+
+
+```{r}
+#| label: fig-expectations
+#| fig-cap: Precisión de la encuesta de expectativas Banxico
+
+load(here::here("data", "survey_history.RData"))
+
+inf <- inputs |> select(reference_date = fecha, infl_mensual)
+
+survey_comp <- survey_history |>
+    mutate(
+        fecha = as_date(reference_date)
+    ) |>
+    left_join(inf) |>
+    mutate(
+        error = value - infl_mensual,
+        p_error = 100 * ((value - infl_mensual) / infl_mensual),
+        t = factor(t)
+    ) |>
+    drop_na(value, infl_mensual) 
+
+survey_summary <- survey_comp |>
+    group_by(t, stat) |>
+    summarise(
+        MAE = mean(abs(error)),
+        RMSE = sqrt(mean(error^2)),
+        ME = mean(error),
+        MPE = mean(p_error)
+    ) |>
+    ungroup() |>
+    pivot_longer(
+        where(is.numeric),
+        names_to = "measure"
+    ) |>
+    filter(str_detect(stat, "Media|Mediana|cuartil|imo")) |>
+    mutate(
+        stat = factor(stat, levels = c(
+            "Mínimo",
+            "Primer cuartil",
+            "Media",
+            "Mediana",
+            "Tercer cuartil",
+            "Máximo"
+        )),
+        measure = factor(measure, levels = c(
+            "MAE",
+            "RMSE",
+            "ME",
+            "MPE"
+        ))
+    ) 
+
+a <- survey_summary |>
+    ggplot(aes(x = as.numeric(t) - 1, y = value, color = stat)) +
+    geom_line() +
+    geom_hline(yintercept = 0, color = "black") +
+    facet_wrap(~measure, scales = "free_y") +
+    scale_x_continuous(breaks = seq(0, 12, 2)) +
+    labs(
+      x = "Meses de anticipación",
+      y = "",
+      color = "Encuesta Banxico"
+    ) +
+    scale_color_viridis_d(option = "D")
+
+a
+
+
+```
+
+```{r}
+#| label: tbl-expectations
+#| tbl-cap: Precisión histórica de la encuesta de expectativas Banxico
+
+survey_comp |>
+    group_by(stat) |>
+    summarise(
+        MAE = mean(abs(error)),
+        RMSE = sqrt(mean(error^2)),
+        ME = mean(error),
+        MPE = mean(p_error)
+    ) |>
+    ungroup() |>
+    pivot_longer(
+        where(is.numeric),
+        names_to = "measure"
+    ) |>
+    filter(str_detect(stat, "Media|Mediana|cuartil|imo")) |>
+    mutate(
+        stat = factor(stat, levels = c(
+            "Mínimo",
+            "Primer cuartil",
+            "Media",
+            "Mediana",
+            "Tercer cuartil",
+            "Máximo"
+        )),
+        measure = factor(measure, levels = c(
+            "MAE",
+            "RMSE",
+            "ME",
+            "MPE"
+        ))
+    ) |>
+  pivot_wider(
+    names_from = measure
+  ) |>
+  rename(
+    "Estadístico" = stat
+  ) |>
+  gt(  ) |>
+  fmt_number(
+    columns = 2:5,
+    decimals = 2
+  )
+
+```
+
+## Referencias
+
+[^1]: ME: *Median Error.-* Error de estimación promedio.
+
+    RMSE: *Root median squared error.-* Raíz cuadrada del error cuadrático medio.
+
+    MAE: *Mean absolute error.-* Error absoluto promedio.
+
+    MPE: *Mean percentage error.-* Error porcentual promedio.
