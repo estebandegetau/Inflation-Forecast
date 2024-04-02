@@ -11,6 +11,7 @@ format:
 execute:
     echo: false
     warning: false
+    freeze: auto
 lang: es
 toc: false
 bibliography: references.bib
