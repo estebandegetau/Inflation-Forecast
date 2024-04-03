@@ -30,7 +30,6 @@ format:
     fig-width: 9
     fig-asp: 0.6
   docx: default
-  typst: default
 execute:
     echo: false
     warning: false
