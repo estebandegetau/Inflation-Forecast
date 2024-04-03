@@ -50,10 +50,12 @@ div.csl-indent {
 <script src="monthly_forecast_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="monthly_forecast_files/libs/quarto-html/anchor.min.js"></script>
 <link href="monthly_forecast_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="monthly_forecast_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="monthly_forecast_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="monthly_forecast_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="monthly_forecast_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="monthly_forecast_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="monthly_forecast_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="monthly_forecast_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="monthly_forecast_files/libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 
 
 </head>
@@ -62,8 +64,21 @@ div.csl-indent {
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
 <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-<div class="quarto-other-links"><h2>Otros Enlaces</h2><ul><li><a href="data/forecasts.csv"><i class="bi bi-download"></i>Datos</a></li></ul></div></div>
-<main class="content" id="quarto-document-content">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#modelos-univariados" id="toc-modelos-univariados" class="nav-link active" data-scroll-target="#modelos-univariados">Modelos univariados</a>
+  <ul class="collapse">
+  <li><a href="#probando-los-modelos" id="toc-probando-los-modelos" class="nav-link" data-scroll-target="#probando-los-modelos">Probando los modelos</a></li>
+  <li><a href="#pronóstico-ex-ante" id="toc-pronóstico-ex-ante" class="nav-link" data-scroll-target="#pronóstico-ex-ante">Pronóstico ex-ante</a></li>
+  </ul></li>
+  <li><a href="#sec-survey" id="toc-sec-survey" class="nav-link" data-scroll-target="#sec-survey">Poder predictivo de la encuesta de expectativas</a></li>
+  <li><a href="#referencias" id="toc-referencias" class="nav-link" data-scroll-target="#referencias">Referencias</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Otros formatos</h2><ul><li><a href="monthly_forecast.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div><div class="quarto-other-links"><h2>Otros Enlaces</h2><ul><li><a href="data/forecasts.csv"><i class="bi bi-download"></i>Pronósticos</a></li><li><a href="data/tests.csv"><i class="bi bi-download"></i>Pruebas</a></li><li><a href="data/banxico_survey.csv"><i class="bi bi-download"></i>Encuesta Banxico</a></li></ul></div><div class="quarto-code-links"><h2>Enlaces de código</h2><ul><li><a href="https://github.com/estebandegetau/Inflation-Forecast"><i class="bi bi-github"></i>Código fuente</a></li></ul></div></nav>
+</div>
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -77,16 +92,10 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Autor/a</div>
     <div class="quarto-title-meta-contents">
-             <p>Esteban Degetau </p>
+             <p>Esteban Degetau <a href="mailto:esteban.degetau@imss.gob.mx" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> <a href="https://orcid.org/0009-0004-4095-8819" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
           </div>
   </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Fecha de publicación</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">2 de abril de 2024</p>
-    </div>
-  </div>
   
     
   </div>
@@ -96,28 +105,55 @@ div.csl-indent {
 </header>
 
 
-<section id="modelos-univariados" class="level2">
-<h2 class="anchored" data-anchor-id="modelos-univariados">Modelos univariados</h2>
-<p>Hay muchas maneras de predecir el futuro, lo que implica que ninguna es perfecta en todos los casos <span class="citation" data-cites="hamming1997">(<a href="#ref-hamming1997" role="doc-biblioref">Hamming 1997</a>)</span>. Una manera de generar predicciones automáticamente es con modelos univariados, que solo utilizan una serie de tiempo como insumo de sus predicciones <span class="citation" data-cites="hyndman2008">(<a href="#ref-hyndman2008" role="doc-biblioref">Hyndman y Khandakar 2008</a>)</span>.</p>
-<p>En esta sección, comparamos los modelos ARIMA, ETS, LM, y NNETAR para predecir la inflación mensual en México. De estos, el modelo ARIMA es el más conocido y utilizado en la literatura. Los modelos ETS y LM son menos conocidos, son útiles por ser más simples. Por último, el modelo NNETAR es un modelo de redes neuronales para series de tiempo que ha demostrado ser útil en la predicción de series de tiempo <span class="citation" data-cites="hyndman2021">(<a href="#ref-hyndman2021" role="doc-biblioref">Hyndman y Athanasopolous 2021</a>)</span>.</p>
-<section id="probando-los-modelos" class="level3">
-<h3 class="anchored" data-anchor-id="probando-los-modelos">Probando los modelos</h3>
-<p>Una manera de comparar distintos modelos de predicción es evaluar su precisión en un conjunto de datos externo; es decir, en un conjunto de datos que no se utilizó para ajustar los modelos. En este caso, utilizamos los datos de inflación mensual desde enero 1994 hasta abril 2022 para ajustar los modelos y los datos desde mayo 2022 hasta febrero 2024 para evaluar su precisión.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div id="fig-test" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-test-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="monthly_forecast_files/figure-html/fig-test-1.png" class="img-fluid figure-img" width="672">
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-test-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;1: Prueba de los modelos
+<div class="callout-title-container flex-fill">
+Nota
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Este reporte se actualizó por última vez el 02 abril 2024 a las 12:05 hrs CDMX.</p>
+</div>
+</div>
+<section id="modelos-univariados" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="modelos-univariados">Modelos univariados</h2>
+<p>Hay al menos 50 maneras distintas de predecir el futuro, lo que implica que todavía no tenemos una herramienta de predicción perfecta <span class="citation" data-cites="hamming1997">(<a href="#ref-hamming1997" role="doc-biblioref">Hamming 1997</a>)</span>. Una manera de generar predicciones automáticamente es con modelos univariados, que solo utilizan una serie de tiempo como insumo de sus predicciones <span class="citation" data-cites="hyndman2008">(<a href="#ref-hyndman2008" role="doc-biblioref">Hyndman y Khandakar 2008</a>)</span>.</p>
+<p>En esta sección, comparamos los modelos ARIMA, ETS, LM, y NNETAR para predecir la inflación mensual en México.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> De estos, el modelo ARIMA es el más conocido y utilizado en la literatura. Los modelos ETS y LM son útiles por ser más simples. Por último, el modelo NNETAR es un modelo de redes neuronales para series de tiempo que ha demostrado ser útil en la predicción de series de tiempo <span class="citation" data-cites="allen2022">(<a href="#ref-allen2022" role="doc-biblioref">Allen 2022</a>)</span>.</p>
+<section id="probando-los-modelos" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="probando-los-modelos">Probando los modelos</h3>
+<p>Una manera de comparar distintos modelos de predicción es evaluar su precisión en un conjunto de datos externo; es decir, en un conjunto de datos que no se utilizó para ajustar los modelos <span class="citation" data-cites="hyndman2021 james2021a">(<a href="#ref-hyndman2021" role="doc-biblioref">Hyndman y Athanasopolous 2021</a>; <a href="#ref-james2021a" role="doc-biblioref">James et&nbsp;al. 2021</a>)</span>. En este caso, utilizamos los datos de inflación mensual desde enero 1994 hasta abril 2022 para ajustar los modelos y los datos desde mayo 2022 hasta febrero 2024 para evaluar su precisión. La <a href="#fig-timeline" class="quarto-xref">Figura&nbsp;1</a> muestra la serie de tiempo de inflación mensual (mes con mes) y los periodos de entrenamiento y prueba.</p>
+<div class="cell page-columns page-full">
+<div class="cell-output-display page-columns page-full">
+<div id="fig-timeline" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-timeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
+<img src="monthly_forecast_files/figure-html/fig-timeline-1.png" class="img-fluid figure-img column-page" width="6000">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-timeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;1: Línea de tiempo de entrenamiento, prueba y pronóstico
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>La <a href="#fig-test" class="quarto-xref">Figura&nbsp;1</a> muestra las predicciones de los modelos en el conjunto de prueba contra la inflación mensual observada. El modelo NNETAR parece ser el más preciso.</p>
+<p>La <a href="#fig-test" class="quarto-xref">Figura&nbsp;2</a> muestra las predicciones de los modelos en el conjunto de prueba contra la inflación mensual observada. El modelo NNETAR parece ser el más preciso.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-test" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-test-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="monthly_forecast_files/figure-html/fig-test-1.png" class="img-fluid figure-img" width="4500">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-test-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2: Prueba de los modelos
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
 <div id="tbl-comp" class="quarto-layout-panel anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-comp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -126,23 +162,23 @@ Tabla&nbsp;1: Precisión de los modelos
 <div aria-describedby="tbl-comp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-layout-row">
 <div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="tbl-comp" style="flex-basis: 50.0%;justify-content: center;">
-<div id="rapibpzaht" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#rapibpzaht table {
+<div id="gmthwasqjb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#gmthwasqjb table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#rapibpzaht thead, #rapibpzaht tbody, #rapibpzaht tfoot, #rapibpzaht tr, #rapibpzaht td, #rapibpzaht th {
+#gmthwasqjb thead, #gmthwasqjb tbody, #gmthwasqjb tfoot, #gmthwasqjb tr, #gmthwasqjb td, #gmthwasqjb th {
   border-style: none;
 }
 
-#rapibpzaht p {
+#gmthwasqjb p {
   margin: 0;
   padding: 0;
 }
 
-#rapibpzaht .gt_table {
+#gmthwasqjb .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -168,12 +204,12 @@ Tabla&nbsp;1: Precisión de los modelos
   border-left-color: #D3D3D3;
 }
 
-#rapibpzaht .gt_caption {
+#gmthwasqjb .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#rapibpzaht .gt_title {
+#gmthwasqjb .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -185,7 +221,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-bottom-width: 0;
 }
 
-#rapibpzaht .gt_subtitle {
+#gmthwasqjb .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -197,7 +233,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-top-width: 0;
 }
 
-#rapibpzaht .gt_heading {
+#gmthwasqjb .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -209,13 +245,13 @@ Tabla&nbsp;1: Precisión de los modelos
   border-right-color: #D3D3D3;
 }
 
-#rapibpzaht .gt_bottom_border {
+#gmthwasqjb .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#rapibpzaht .gt_col_headings {
+#gmthwasqjb .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -230,7 +266,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-right-color: #D3D3D3;
 }
 
-#rapibpzaht .gt_col_heading {
+#gmthwasqjb .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -250,7 +286,7 @@ Tabla&nbsp;1: Precisión de los modelos
   overflow-x: hidden;
 }
 
-#rapibpzaht .gt_column_spanner_outer {
+#gmthwasqjb .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -262,15 +298,15 @@ Tabla&nbsp;1: Precisión de los modelos
   padding-right: 4px;
 }
 
-#rapibpzaht .gt_column_spanner_outer:first-child {
+#gmthwasqjb .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#rapibpzaht .gt_column_spanner_outer:last-child {
+#gmthwasqjb .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#rapibpzaht .gt_column_spanner {
+#gmthwasqjb .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -282,11 +318,11 @@ Tabla&nbsp;1: Precisión de los modelos
   width: 100%;
 }
 
-#rapibpzaht .gt_spanner_row {
+#gmthwasqjb .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#rapibpzaht .gt_group_heading {
+#gmthwasqjb .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -312,7 +348,7 @@ Tabla&nbsp;1: Precisión de los modelos
   text-align: left;
 }
 
-#rapibpzaht .gt_empty_group_heading {
+#gmthwasqjb .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -327,15 +363,15 @@ Tabla&nbsp;1: Precisión de los modelos
   vertical-align: middle;
 }
 
-#rapibpzaht .gt_from_md > :first-child {
+#gmthwasqjb .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#rapibpzaht .gt_from_md > :last-child {
+#gmthwasqjb .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#rapibpzaht .gt_row {
+#gmthwasqjb .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -354,7 +390,7 @@ Tabla&nbsp;1: Precisión de los modelos
   overflow-x: hidden;
 }
 
-#rapibpzaht .gt_stub {
+#gmthwasqjb .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -367,7 +403,7 @@ Tabla&nbsp;1: Precisión de los modelos
   padding-right: 5px;
 }
 
-#rapibpzaht .gt_stub_row_group {
+#gmthwasqjb .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -381,15 +417,15 @@ Tabla&nbsp;1: Precisión de los modelos
   vertical-align: top;
 }
 
-#rapibpzaht .gt_row_group_first td {
+#gmthwasqjb .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#rapibpzaht .gt_row_group_first th {
+#gmthwasqjb .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#rapibpzaht .gt_summary_row {
+#gmthwasqjb .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -399,16 +435,16 @@ Tabla&nbsp;1: Precisión de los modelos
   padding-right: 5px;
 }
 
-#rapibpzaht .gt_first_summary_row {
+#gmthwasqjb .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#rapibpzaht .gt_first_summary_row.thick {
+#gmthwasqjb .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#rapibpzaht .gt_last_summary_row {
+#gmthwasqjb .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -418,7 +454,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-bottom-color: #D3D3D3;
 }
 
-#rapibpzaht .gt_grand_summary_row {
+#gmthwasqjb .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -428,7 +464,7 @@ Tabla&nbsp;1: Precisión de los modelos
   padding-right: 5px;
 }
 
-#rapibpzaht .gt_first_grand_summary_row {
+#gmthwasqjb .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -438,7 +474,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-top-color: #D3D3D3;
 }
 
-#rapibpzaht .gt_last_grand_summary_row_top {
+#gmthwasqjb .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -448,11 +484,11 @@ Tabla&nbsp;1: Precisión de los modelos
   border-bottom-color: #D3D3D3;
 }
 
-#rapibpzaht .gt_striped {
+#gmthwasqjb .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#rapibpzaht .gt_table_body {
+#gmthwasqjb .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -461,7 +497,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-bottom-color: #D3D3D3;
 }
 
-#rapibpzaht .gt_footnotes {
+#gmthwasqjb .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -475,7 +511,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-right-color: #D3D3D3;
 }
 
-#rapibpzaht .gt_footnote {
+#gmthwasqjb .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -484,7 +520,7 @@ Tabla&nbsp;1: Precisión de los modelos
   padding-right: 5px;
 }
 
-#rapibpzaht .gt_sourcenotes {
+#gmthwasqjb .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -498,7 +534,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-right-color: #D3D3D3;
 }
 
-#rapibpzaht .gt_sourcenote {
+#gmthwasqjb .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -506,63 +542,63 @@ Tabla&nbsp;1: Precisión de los modelos
   padding-right: 5px;
 }
 
-#rapibpzaht .gt_left {
+#gmthwasqjb .gt_left {
   text-align: left;
 }
 
-#rapibpzaht .gt_center {
+#gmthwasqjb .gt_center {
   text-align: center;
 }
 
-#rapibpzaht .gt_right {
+#gmthwasqjb .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#rapibpzaht .gt_font_normal {
+#gmthwasqjb .gt_font_normal {
   font-weight: normal;
 }
 
-#rapibpzaht .gt_font_bold {
+#gmthwasqjb .gt_font_bold {
   font-weight: bold;
 }
 
-#rapibpzaht .gt_font_italic {
+#gmthwasqjb .gt_font_italic {
   font-style: italic;
 }
 
-#rapibpzaht .gt_super {
+#gmthwasqjb .gt_super {
   font-size: 65%;
 }
 
-#rapibpzaht .gt_footnote_marks {
+#gmthwasqjb .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#rapibpzaht .gt_asterisk {
+#gmthwasqjb .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#rapibpzaht .gt_indent_1 {
+#gmthwasqjb .gt_indent_1 {
   text-indent: 5px;
 }
 
-#rapibpzaht .gt_indent_2 {
+#gmthwasqjb .gt_indent_2 {
   text-indent: 10px;
 }
 
-#rapibpzaht .gt_indent_3 {
+#gmthwasqjb .gt_indent_3 {
   text-indent: 15px;
 }
 
-#rapibpzaht .gt_indent_4 {
+#gmthwasqjb .gt_indent_4 {
   text-indent: 20px;
 }
 
-#rapibpzaht .gt_indent_5 {
+#gmthwasqjb .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -621,23 +657,23 @@ Tabla&nbsp;1: Precisión de los modelos
 </div>
 </div>
 <div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="tbl-comp" style="flex-basis: 50.0%;justify-content: center;">
-<div id="obwosgldki" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#obwosgldki table {
+<div id="ennbjafwyv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ennbjafwyv table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#obwosgldki thead, #obwosgldki tbody, #obwosgldki tfoot, #obwosgldki tr, #obwosgldki td, #obwosgldki th {
+#ennbjafwyv thead, #ennbjafwyv tbody, #ennbjafwyv tfoot, #ennbjafwyv tr, #ennbjafwyv td, #ennbjafwyv th {
   border-style: none;
 }
 
-#obwosgldki p {
+#ennbjafwyv p {
   margin: 0;
   padding: 0;
 }
 
-#obwosgldki .gt_table {
+#ennbjafwyv .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -663,12 +699,12 @@ Tabla&nbsp;1: Precisión de los modelos
   border-left-color: #D3D3D3;
 }
 
-#obwosgldki .gt_caption {
+#ennbjafwyv .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#obwosgldki .gt_title {
+#ennbjafwyv .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -680,7 +716,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-bottom-width: 0;
 }
 
-#obwosgldki .gt_subtitle {
+#ennbjafwyv .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -692,7 +728,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-top-width: 0;
 }
 
-#obwosgldki .gt_heading {
+#ennbjafwyv .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -704,13 +740,13 @@ Tabla&nbsp;1: Precisión de los modelos
   border-right-color: #D3D3D3;
 }
 
-#obwosgldki .gt_bottom_border {
+#ennbjafwyv .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#obwosgldki .gt_col_headings {
+#ennbjafwyv .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -725,7 +761,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-right-color: #D3D3D3;
 }
 
-#obwosgldki .gt_col_heading {
+#ennbjafwyv .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -745,7 +781,7 @@ Tabla&nbsp;1: Precisión de los modelos
   overflow-x: hidden;
 }
 
-#obwosgldki .gt_column_spanner_outer {
+#ennbjafwyv .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -757,15 +793,15 @@ Tabla&nbsp;1: Precisión de los modelos
   padding-right: 4px;
 }
 
-#obwosgldki .gt_column_spanner_outer:first-child {
+#ennbjafwyv .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#obwosgldki .gt_column_spanner_outer:last-child {
+#ennbjafwyv .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#obwosgldki .gt_column_spanner {
+#ennbjafwyv .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -777,11 +813,11 @@ Tabla&nbsp;1: Precisión de los modelos
   width: 100%;
 }
 
-#obwosgldki .gt_spanner_row {
+#ennbjafwyv .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#obwosgldki .gt_group_heading {
+#ennbjafwyv .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -807,7 +843,7 @@ Tabla&nbsp;1: Precisión de los modelos
   text-align: left;
 }
 
-#obwosgldki .gt_empty_group_heading {
+#ennbjafwyv .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -822,15 +858,15 @@ Tabla&nbsp;1: Precisión de los modelos
   vertical-align: middle;
 }
 
-#obwosgldki .gt_from_md > :first-child {
+#ennbjafwyv .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#obwosgldki .gt_from_md > :last-child {
+#ennbjafwyv .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#obwosgldki .gt_row {
+#ennbjafwyv .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -849,7 +885,7 @@ Tabla&nbsp;1: Precisión de los modelos
   overflow-x: hidden;
 }
 
-#obwosgldki .gt_stub {
+#ennbjafwyv .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -862,7 +898,7 @@ Tabla&nbsp;1: Precisión de los modelos
   padding-right: 5px;
 }
 
-#obwosgldki .gt_stub_row_group {
+#ennbjafwyv .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -876,15 +912,15 @@ Tabla&nbsp;1: Precisión de los modelos
   vertical-align: top;
 }
 
-#obwosgldki .gt_row_group_first td {
+#ennbjafwyv .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#obwosgldki .gt_row_group_first th {
+#ennbjafwyv .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#obwosgldki .gt_summary_row {
+#ennbjafwyv .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -894,16 +930,16 @@ Tabla&nbsp;1: Precisión de los modelos
   padding-right: 5px;
 }
 
-#obwosgldki .gt_first_summary_row {
+#ennbjafwyv .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#obwosgldki .gt_first_summary_row.thick {
+#ennbjafwyv .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#obwosgldki .gt_last_summary_row {
+#ennbjafwyv .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -913,7 +949,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-bottom-color: #D3D3D3;
 }
 
-#obwosgldki .gt_grand_summary_row {
+#ennbjafwyv .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -923,7 +959,7 @@ Tabla&nbsp;1: Precisión de los modelos
   padding-right: 5px;
 }
 
-#obwosgldki .gt_first_grand_summary_row {
+#ennbjafwyv .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -933,7 +969,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-top-color: #D3D3D3;
 }
 
-#obwosgldki .gt_last_grand_summary_row_top {
+#ennbjafwyv .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -943,11 +979,11 @@ Tabla&nbsp;1: Precisión de los modelos
   border-bottom-color: #D3D3D3;
 }
 
-#obwosgldki .gt_striped {
+#ennbjafwyv .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#obwosgldki .gt_table_body {
+#ennbjafwyv .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -956,7 +992,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-bottom-color: #D3D3D3;
 }
 
-#obwosgldki .gt_footnotes {
+#ennbjafwyv .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -970,7 +1006,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-right-color: #D3D3D3;
 }
 
-#obwosgldki .gt_footnote {
+#ennbjafwyv .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -979,7 +1015,7 @@ Tabla&nbsp;1: Precisión de los modelos
   padding-right: 5px;
 }
 
-#obwosgldki .gt_sourcenotes {
+#ennbjafwyv .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -993,7 +1029,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-right-color: #D3D3D3;
 }
 
-#obwosgldki .gt_sourcenote {
+#ennbjafwyv .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1001,63 +1037,63 @@ Tabla&nbsp;1: Precisión de los modelos
   padding-right: 5px;
 }
 
-#obwosgldki .gt_left {
+#ennbjafwyv .gt_left {
   text-align: left;
 }
 
-#obwosgldki .gt_center {
+#ennbjafwyv .gt_center {
   text-align: center;
 }
 
-#obwosgldki .gt_right {
+#ennbjafwyv .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#obwosgldki .gt_font_normal {
+#ennbjafwyv .gt_font_normal {
   font-weight: normal;
 }
 
-#obwosgldki .gt_font_bold {
+#ennbjafwyv .gt_font_bold {
   font-weight: bold;
 }
 
-#obwosgldki .gt_font_italic {
+#ennbjafwyv .gt_font_italic {
   font-style: italic;
 }
 
-#obwosgldki .gt_super {
+#ennbjafwyv .gt_super {
   font-size: 65%;
 }
 
-#obwosgldki .gt_footnote_marks {
+#ennbjafwyv .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#obwosgldki .gt_asterisk {
+#ennbjafwyv .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#obwosgldki .gt_indent_1 {
+#ennbjafwyv .gt_indent_1 {
   text-indent: 5px;
 }
 
-#obwosgldki .gt_indent_2 {
+#ennbjafwyv .gt_indent_2 {
   text-indent: 10px;
 }
 
-#obwosgldki .gt_indent_3 {
+#ennbjafwyv .gt_indent_3 {
   text-indent: 15px;
 }
 
-#obwosgldki .gt_indent_4 {
+#ennbjafwyv .gt_indent_4 {
   text-indent: 20px;
 }
 
-#obwosgldki .gt_indent_5 {
+#ennbjafwyv .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1119,12 +1155,12 @@ Tabla&nbsp;1: Precisión de los modelos
 </div>
 </figure>
 </div>
-<p>La <a href="#tbl-comp" class="quarto-xref">Tabla&nbsp;1</a> muestra algunas métricas de precisión de los pronósticos dentro y fuera de la muestra de entrenamiento.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> El modelo más preciso fue NNETAR, puesto que tuvo errores más pequeños.</p>
+<p>La <a href="#tbl-comp" class="quarto-xref">Tabla&nbsp;1</a> muestra algunas métricas de precisión de los pronósticos dentro y fuera de la muestra de entrenamiento.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> El modelo más preciso fue NNETAR, puesto que tuvo errores absolutos y cuadráticos más pequeños fuera de la muestra. Estas métricas son útiles para comparar diferentes modelos y las seguiremos utilizando para evaluar la precisión de los modelos en el pronóstico ex-ante.</p>
 </section>
 <section id="pronóstico-ex-ante" class="level3">
 <h3 class="anchored" data-anchor-id="pronóstico-ex-ante">Pronóstico ex-ante</h3>
-<p>Sabiendo cuán precisos son los modelos, procedo a pronosticar la inflación mensual en México desde marzo 2024 hasta diciembre 2025. Solo para fines comparativos, utilizaré todos los modelos aunque el mejor fue NNETAR.</p>
-<p>La <a href="#fig-forecast" class="quarto-xref">Figura&nbsp;2</a> muestra los pronósticos de los modelos para los siguientes 22 meses. Algo importante para notar es que el modelo NNETAR (<a href="#fig-forecast-4" class="quarto-xref">Figura&nbsp;2 (d)</a>) no produce intervalos de confianza, puesto que las predicciones por redes neuronales pierden interpretabilidad y no permiten tener una medida de la varianza de la predicción.</p>
+<p>Sabiendo cuán precisos son los modelos, procedo a pronosticar la inflación mensual en México desde marzo 2024 hasta diciembre 2025. Solo para fines comparativos, utilizaré todos los modelos aunque el mejor fue indiscutiblemente NNETAR.</p>
+<p>La <a href="#fig-forecast" class="quarto-xref">Figura&nbsp;3</a> muestra los pronósticos de los modelos para los siguientes 22 meses. Algo importante para notar es que el modelo NNETAR (<a href="#fig-forecast-4" class="quarto-xref">Figura&nbsp;3 (d)</a>) no produce intervalos de confianza, puesto que las predicciones por redes neuronales pierden interpretabilidad y no permiten tener una medida de la varianza de la predicción.</p>
 <div id="fig-forecast" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-forecast-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1133,7 +1169,7 @@ Tabla&nbsp;1: Precisión de los modelos
 <div id="fig-forecast-1" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-forecast-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="monthly_forecast_files/figure-html/fig-forecast-1.png" class="img-fluid figure-img" data-ref-parent="fig-forecast" width="672">
+<img src="monthly_forecast_files/figure-html/fig-forecast-1.png" class="img-fluid figure-img" data-ref-parent="fig-forecast" width="2500">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-forecast-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (a) ARIMA
@@ -1145,7 +1181,7 @@ Tabla&nbsp;1: Precisión de los modelos
 <div id="fig-forecast-2" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-forecast-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="monthly_forecast_files/figure-html/fig-forecast-2.png" class="img-fluid figure-img" data-ref-parent="fig-forecast" width="672">
+<img src="monthly_forecast_files/figure-html/fig-forecast-2.png" class="img-fluid figure-img" data-ref-parent="fig-forecast" width="2500">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-forecast-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (b) ETS
@@ -1159,7 +1195,7 @@ Tabla&nbsp;1: Precisión de los modelos
 <div id="fig-forecast-3" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-forecast-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="monthly_forecast_files/figure-html/fig-forecast-3.png" class="img-fluid figure-img" data-ref-parent="fig-forecast" width="672">
+<img src="monthly_forecast_files/figure-html/fig-forecast-3.png" class="img-fluid figure-img" data-ref-parent="fig-forecast" width="2500">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-forecast-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (c) LM
@@ -1171,7 +1207,7 @@ Tabla&nbsp;1: Precisión de los modelos
 <div id="fig-forecast-4" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-forecast-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="monthly_forecast_files/figure-html/fig-forecast-4.png" class="img-fluid figure-img" data-ref-parent="fig-forecast" width="672">
+<img src="monthly_forecast_files/figure-html/fig-forecast-4.png" class="img-fluid figure-img" data-ref-parent="fig-forecast" width="2500">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-forecast-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (d) NNETAR
@@ -1182,26 +1218,27 @@ Tabla&nbsp;1: Precisión de los modelos
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-forecast-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;2: Comparación de pronósticos
+Figura&nbsp;3: Pronósticos ex-ante de inflación mensual
 </figcaption>
 </figure>
 </div>
-<p>Una manera de evaluar la precisión de los pronósticos ex-ante es con respecto a la encuesta de expectativas de inflación mensual del Banco de México (Banxico). La <a href="#fig-banxico" class="quarto-xref">Figura&nbsp;3</a> muestra los pronósticos de los modelos para los siguientes 12 meses y los compara con la media de las respuestas de la encuesta.</p>
+<p>Una manera de evaluar la precisión de los pronósticos ex-ante es con respecto a la encuesta de expectativas de inflación mensual del Banco de México <span class="citation" data-cites="banxico_sie">(<a href="#ref-banxico_sie" role="doc-biblioref">Banco de México s.&nbsp;f.</a>)</span>. La <a href="#fig-banxico" class="quarto-xref">Figura&nbsp;4</a> muestra los pronósticos de los modelos para los siguientes 12 meses y los compara con la media de las respuestas de la encuesta. Ninguno de los modelos que entrené se ajusta perfectamente al promedio de las expectativas, pero NNETAR y ETS están muy cerca.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-banxico" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-banxico-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="monthly_forecast_files/figure-html/fig-banxico-1.png" class="img-fluid figure-img" width="672">
+<img src="monthly_forecast_files/figure-html/fig-banxico-1.png" class="img-fluid figure-img" width="4500">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-banxico-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;3: Pronóstico de inflación mensual a doce meses vs media de encuesta de expectativas Banxico
+Figura&nbsp;4: Pronóstico de inflación mensual a doce meses vs media de encuesta de expectativas Banxico
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>La <a href="#tbl-banxico" class="quarto-xref">Tabla&nbsp;2</a> muestra la precisión de los modelos en la muestra completa respecto a la media de las expectativas de los analistas de Banxico. Es importante notar que el mejor modelo en nuestra prueba no es el modelo más cercano a la madia de los los analistas, mas el error es bastante pequeño.</p>
+<p>La <a href="#tbl-banxico" class="quarto-xref">Tabla&nbsp;2</a> muestra la precisión de los modelos en la muestra completa respecto a la media de las expectativas de los analistas de Banxico. Es importante notar que el mejor modelo en nuestras pruebas (NNETAR) no es el que resultó estar más cerca del promedio de los analistas. Sin embargo, esto obliga hacer la pregunta ¿qué tan preciso puede ser el proimedio de analistas para predecir la inflación? La <a href="#sec-survey" class="quarto-xref">Sección&nbsp;2</a> busca responder esta pregunta.</p>
+<p>Otra manera de medir la precisión del pronóstico es comparando la inflaicón anual para 2025 con la media de las expectativas de los analistas de Banxico. La <a href="#tbl-yearly" class="quarto-xref">Tabla&nbsp;3</a> muestra que el modelo NNETAR tuvo la predicción más cercana a la encuesta de expectativas.</p>
 <div class="cell">
 <div id="tbl-banxico" class="cell quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -1210,23 +1247,23 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
 </figcaption>
 <div aria-describedby="tbl-banxico-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="xrhdtxjgbz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#xrhdtxjgbz table {
+<div id="fynhfbiggq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#fynhfbiggq table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#xrhdtxjgbz thead, #xrhdtxjgbz tbody, #xrhdtxjgbz tfoot, #xrhdtxjgbz tr, #xrhdtxjgbz td, #xrhdtxjgbz th {
+#fynhfbiggq thead, #fynhfbiggq tbody, #fynhfbiggq tfoot, #fynhfbiggq tr, #fynhfbiggq td, #fynhfbiggq th {
   border-style: none;
 }
 
-#xrhdtxjgbz p {
+#fynhfbiggq p {
   margin: 0;
   padding: 0;
 }
 
-#xrhdtxjgbz .gt_table {
+#fynhfbiggq .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1252,12 +1289,12 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   border-left-color: #D3D3D3;
 }
 
-#xrhdtxjgbz .gt_caption {
+#fynhfbiggq .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#xrhdtxjgbz .gt_title {
+#fynhfbiggq .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1269,7 +1306,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   border-bottom-width: 0;
 }
 
-#xrhdtxjgbz .gt_subtitle {
+#fynhfbiggq .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1281,7 +1318,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   border-top-width: 0;
 }
 
-#xrhdtxjgbz .gt_heading {
+#fynhfbiggq .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1293,13 +1330,13 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   border-right-color: #D3D3D3;
 }
 
-#xrhdtxjgbz .gt_bottom_border {
+#fynhfbiggq .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#xrhdtxjgbz .gt_col_headings {
+#fynhfbiggq .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1314,7 +1351,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   border-right-color: #D3D3D3;
 }
 
-#xrhdtxjgbz .gt_col_heading {
+#fynhfbiggq .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1334,7 +1371,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   overflow-x: hidden;
 }
 
-#xrhdtxjgbz .gt_column_spanner_outer {
+#fynhfbiggq .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1346,15 +1383,15 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   padding-right: 4px;
 }
 
-#xrhdtxjgbz .gt_column_spanner_outer:first-child {
+#fynhfbiggq .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#xrhdtxjgbz .gt_column_spanner_outer:last-child {
+#fynhfbiggq .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#xrhdtxjgbz .gt_column_spanner {
+#fynhfbiggq .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1366,11 +1403,11 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   width: 100%;
 }
 
-#xrhdtxjgbz .gt_spanner_row {
+#fynhfbiggq .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#xrhdtxjgbz .gt_group_heading {
+#fynhfbiggq .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1396,7 +1433,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   text-align: left;
 }
 
-#xrhdtxjgbz .gt_empty_group_heading {
+#fynhfbiggq .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1411,15 +1448,15 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   vertical-align: middle;
 }
 
-#xrhdtxjgbz .gt_from_md > :first-child {
+#fynhfbiggq .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#xrhdtxjgbz .gt_from_md > :last-child {
+#fynhfbiggq .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#xrhdtxjgbz .gt_row {
+#fynhfbiggq .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1438,7 +1475,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   overflow-x: hidden;
 }
 
-#xrhdtxjgbz .gt_stub {
+#fynhfbiggq .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1451,7 +1488,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   padding-right: 5px;
 }
 
-#xrhdtxjgbz .gt_stub_row_group {
+#fynhfbiggq .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1465,15 +1502,15 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   vertical-align: top;
 }
 
-#xrhdtxjgbz .gt_row_group_first td {
+#fynhfbiggq .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#xrhdtxjgbz .gt_row_group_first th {
+#fynhfbiggq .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#xrhdtxjgbz .gt_summary_row {
+#fynhfbiggq .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1483,16 +1520,16 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   padding-right: 5px;
 }
 
-#xrhdtxjgbz .gt_first_summary_row {
+#fynhfbiggq .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#xrhdtxjgbz .gt_first_summary_row.thick {
+#fynhfbiggq .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#xrhdtxjgbz .gt_last_summary_row {
+#fynhfbiggq .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1502,7 +1539,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   border-bottom-color: #D3D3D3;
 }
 
-#xrhdtxjgbz .gt_grand_summary_row {
+#fynhfbiggq .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1512,7 +1549,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   padding-right: 5px;
 }
 
-#xrhdtxjgbz .gt_first_grand_summary_row {
+#fynhfbiggq .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1522,7 +1559,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   border-top-color: #D3D3D3;
 }
 
-#xrhdtxjgbz .gt_last_grand_summary_row_top {
+#fynhfbiggq .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1532,11 +1569,11 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   border-bottom-color: #D3D3D3;
 }
 
-#xrhdtxjgbz .gt_striped {
+#fynhfbiggq .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#xrhdtxjgbz .gt_table_body {
+#fynhfbiggq .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1545,7 +1582,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   border-bottom-color: #D3D3D3;
 }
 
-#xrhdtxjgbz .gt_footnotes {
+#fynhfbiggq .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1559,7 +1596,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   border-right-color: #D3D3D3;
 }
 
-#xrhdtxjgbz .gt_footnote {
+#fynhfbiggq .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1568,7 +1605,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   padding-right: 5px;
 }
 
-#xrhdtxjgbz .gt_sourcenotes {
+#fynhfbiggq .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1582,7 +1619,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   border-right-color: #D3D3D3;
 }
 
-#xrhdtxjgbz .gt_sourcenote {
+#fynhfbiggq .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1590,63 +1627,63 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   padding-right: 5px;
 }
 
-#xrhdtxjgbz .gt_left {
+#fynhfbiggq .gt_left {
   text-align: left;
 }
 
-#xrhdtxjgbz .gt_center {
+#fynhfbiggq .gt_center {
   text-align: center;
 }
 
-#xrhdtxjgbz .gt_right {
+#fynhfbiggq .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#xrhdtxjgbz .gt_font_normal {
+#fynhfbiggq .gt_font_normal {
   font-weight: normal;
 }
 
-#xrhdtxjgbz .gt_font_bold {
+#fynhfbiggq .gt_font_bold {
   font-weight: bold;
 }
 
-#xrhdtxjgbz .gt_font_italic {
+#fynhfbiggq .gt_font_italic {
   font-style: italic;
 }
 
-#xrhdtxjgbz .gt_super {
+#fynhfbiggq .gt_super {
   font-size: 65%;
 }
 
-#xrhdtxjgbz .gt_footnote_marks {
+#fynhfbiggq .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#xrhdtxjgbz .gt_asterisk {
+#fynhfbiggq .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#xrhdtxjgbz .gt_indent_1 {
+#fynhfbiggq .gt_indent_1 {
   text-indent: 5px;
 }
 
-#xrhdtxjgbz .gt_indent_2 {
+#fynhfbiggq .gt_indent_2 {
   text-indent: 10px;
 }
 
-#xrhdtxjgbz .gt_indent_3 {
+#fynhfbiggq .gt_indent_3 {
   text-indent: 15px;
 }
 
-#xrhdtxjgbz .gt_indent_4 {
+#fynhfbiggq .gt_indent_4 {
   text-indent: 20px;
 }
 
-#xrhdtxjgbz .gt_indent_5 {
+#fynhfbiggq .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1699,51 +1736,31 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
 </figure>
 </div>
 </div>
-</section>
-</section>
-<section id="sec-survey" class="level2">
-<h2 class="anchored" data-anchor-id="sec-survey">Poder predictivo de la encuesta de expectativas</h2>
-<p>Esta sección evalúa la capacidad predictiva de la encuesta de expectativas de inflación del Banco de México. La <a href="#fig-expectations" class="quarto-xref">Figura&nbsp;4</a> muestra que las predicciones intercuartílicas tienen el mismo desempeño en cuanto a los errores absolutos. La media y la mediana tienen un error medio cercano a cero hasta los seis meses de anticipación; a partir de ese punto, tienen un sesgo negativo.</p>
-<p>Es importante destacar que los errores absolutos no son monotónicos; las mejores predicciones son con anticipaciones cercanas a 0 y a 12 meses. Las peores predicciones son a seis meses de anticipación.</p>
 <div class="cell">
-<div class="cell-output-display">
-<div id="fig-expectations" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-expectations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="monthly_forecast_files/figure-html/fig-expectations-1.png" class="img-fluid figure-img" width="672">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-expectations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;4: Precisión de la encuesta de expectativas Banxico
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell">
-<div id="tbl-expectations" class="cell quarto-float anchored">
+<div id="tbl-yearly" class="cell quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-expectations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabla&nbsp;3: Precisión histórica de la encuesta de expectativas Banxico
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-yearly-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto a encuesta de expectativas Banxico
 </figcaption>
-<div aria-describedby="tbl-expectations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div aria-describedby="tbl-yearly-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="nzajjvsmjk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#nzajjvsmjk table {
+<div id="fhqcojnxqa" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#fhqcojnxqa table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#nzajjvsmjk thead, #nzajjvsmjk tbody, #nzajjvsmjk tfoot, #nzajjvsmjk tr, #nzajjvsmjk td, #nzajjvsmjk th {
+#fhqcojnxqa thead, #fhqcojnxqa tbody, #fhqcojnxqa tfoot, #fhqcojnxqa tr, #fhqcojnxqa td, #fhqcojnxqa th {
   border-style: none;
 }
 
-#nzajjvsmjk p {
+#fhqcojnxqa p {
   margin: 0;
   padding: 0;
 }
 
-#nzajjvsmjk .gt_table {
+#fhqcojnxqa .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1769,12 +1786,12 @@ Tabla&nbsp;3: Precisión histórica de la encuesta de expectativas Banxico
   border-left-color: #D3D3D3;
 }
 
-#nzajjvsmjk .gt_caption {
+#fhqcojnxqa .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#nzajjvsmjk .gt_title {
+#fhqcojnxqa .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1786,7 +1803,7 @@ Tabla&nbsp;3: Precisión histórica de la encuesta de expectativas Banxico
   border-bottom-width: 0;
 }
 
-#nzajjvsmjk .gt_subtitle {
+#fhqcojnxqa .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1798,7 +1815,7 @@ Tabla&nbsp;3: Precisión histórica de la encuesta de expectativas Banxico
   border-top-width: 0;
 }
 
-#nzajjvsmjk .gt_heading {
+#fhqcojnxqa .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1810,13 +1827,13 @@ Tabla&nbsp;3: Precisión histórica de la encuesta de expectativas Banxico
   border-right-color: #D3D3D3;
 }
 
-#nzajjvsmjk .gt_bottom_border {
+#fhqcojnxqa .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#nzajjvsmjk .gt_col_headings {
+#fhqcojnxqa .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1831,7 +1848,7 @@ Tabla&nbsp;3: Precisión histórica de la encuesta de expectativas Banxico
   border-right-color: #D3D3D3;
 }
 
-#nzajjvsmjk .gt_col_heading {
+#fhqcojnxqa .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1851,7 +1868,7 @@ Tabla&nbsp;3: Precisión histórica de la encuesta de expectativas Banxico
   overflow-x: hidden;
 }
 
-#nzajjvsmjk .gt_column_spanner_outer {
+#fhqcojnxqa .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1863,15 +1880,15 @@ Tabla&nbsp;3: Precisión histórica de la encuesta de expectativas Banxico
   padding-right: 4px;
 }
 
-#nzajjvsmjk .gt_column_spanner_outer:first-child {
+#fhqcojnxqa .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#nzajjvsmjk .gt_column_spanner_outer:last-child {
+#fhqcojnxqa .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#nzajjvsmjk .gt_column_spanner {
+#fhqcojnxqa .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1883,11 +1900,11 @@ Tabla&nbsp;3: Precisión histórica de la encuesta de expectativas Banxico
   width: 100%;
 }
 
-#nzajjvsmjk .gt_spanner_row {
+#fhqcojnxqa .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#nzajjvsmjk .gt_group_heading {
+#fhqcojnxqa .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1913,7 +1930,7 @@ Tabla&nbsp;3: Precisión histórica de la encuesta de expectativas Banxico
   text-align: left;
 }
 
-#nzajjvsmjk .gt_empty_group_heading {
+#fhqcojnxqa .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1928,15 +1945,15 @@ Tabla&nbsp;3: Precisión histórica de la encuesta de expectativas Banxico
   vertical-align: middle;
 }
 
-#nzajjvsmjk .gt_from_md > :first-child {
+#fhqcojnxqa .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#nzajjvsmjk .gt_from_md > :last-child {
+#fhqcojnxqa .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#nzajjvsmjk .gt_row {
+#fhqcojnxqa .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1955,7 +1972,7 @@ Tabla&nbsp;3: Precisión histórica de la encuesta de expectativas Banxico
   overflow-x: hidden;
 }
 
-#nzajjvsmjk .gt_stub {
+#fhqcojnxqa .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1968,7 +1985,7 @@ Tabla&nbsp;3: Precisión histórica de la encuesta de expectativas Banxico
   padding-right: 5px;
 }
 
-#nzajjvsmjk .gt_stub_row_group {
+#fhqcojnxqa .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1982,15 +1999,15 @@ Tabla&nbsp;3: Precisión histórica de la encuesta de expectativas Banxico
   vertical-align: top;
 }
 
-#nzajjvsmjk .gt_row_group_first td {
+#fhqcojnxqa .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#nzajjvsmjk .gt_row_group_first th {
+#fhqcojnxqa .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#nzajjvsmjk .gt_summary_row {
+#fhqcojnxqa .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2000,16 +2017,16 @@ Tabla&nbsp;3: Precisión histórica de la encuesta de expectativas Banxico
   padding-right: 5px;
 }
 
-#nzajjvsmjk .gt_first_summary_row {
+#fhqcojnxqa .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#nzajjvsmjk .gt_first_summary_row.thick {
+#fhqcojnxqa .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#nzajjvsmjk .gt_last_summary_row {
+#fhqcojnxqa .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2019,7 +2036,7 @@ Tabla&nbsp;3: Precisión histórica de la encuesta de expectativas Banxico
   border-bottom-color: #D3D3D3;
 }
 
-#nzajjvsmjk .gt_grand_summary_row {
+#fhqcojnxqa .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2029,7 +2046,7 @@ Tabla&nbsp;3: Precisión histórica de la encuesta de expectativas Banxico
   padding-right: 5px;
 }
 
-#nzajjvsmjk .gt_first_grand_summary_row {
+#fhqcojnxqa .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2039,7 +2056,7 @@ Tabla&nbsp;3: Precisión histórica de la encuesta de expectativas Banxico
   border-top-color: #D3D3D3;
 }
 
-#nzajjvsmjk .gt_last_grand_summary_row_top {
+#fhqcojnxqa .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2049,11 +2066,11 @@ Tabla&nbsp;3: Precisión histórica de la encuesta de expectativas Banxico
   border-bottom-color: #D3D3D3;
 }
 
-#nzajjvsmjk .gt_striped {
+#fhqcojnxqa .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#nzajjvsmjk .gt_table_body {
+#fhqcojnxqa .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2062,7 +2079,7 @@ Tabla&nbsp;3: Precisión histórica de la encuesta de expectativas Banxico
   border-bottom-color: #D3D3D3;
 }
 
-#nzajjvsmjk .gt_footnotes {
+#fhqcojnxqa .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2076,7 +2093,7 @@ Tabla&nbsp;3: Precisión histórica de la encuesta de expectativas Banxico
   border-right-color: #D3D3D3;
 }
 
-#nzajjvsmjk .gt_footnote {
+#fhqcojnxqa .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2085,7 +2102,7 @@ Tabla&nbsp;3: Precisión histórica de la encuesta de expectativas Banxico
   padding-right: 5px;
 }
 
-#nzajjvsmjk .gt_sourcenotes {
+#fhqcojnxqa .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2099,7 +2116,7 @@ Tabla&nbsp;3: Precisión histórica de la encuesta de expectativas Banxico
   border-right-color: #D3D3D3;
 }
 
-#nzajjvsmjk .gt_sourcenote {
+#fhqcojnxqa .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2107,63 +2124,581 @@ Tabla&nbsp;3: Precisión histórica de la encuesta de expectativas Banxico
   padding-right: 5px;
 }
 
-#nzajjvsmjk .gt_left {
+#fhqcojnxqa .gt_left {
   text-align: left;
 }
 
-#nzajjvsmjk .gt_center {
+#fhqcojnxqa .gt_center {
   text-align: center;
 }
 
-#nzajjvsmjk .gt_right {
+#fhqcojnxqa .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#nzajjvsmjk .gt_font_normal {
+#fhqcojnxqa .gt_font_normal {
   font-weight: normal;
 }
 
-#nzajjvsmjk .gt_font_bold {
+#fhqcojnxqa .gt_font_bold {
   font-weight: bold;
 }
 
-#nzajjvsmjk .gt_font_italic {
+#fhqcojnxqa .gt_font_italic {
   font-style: italic;
 }
 
-#nzajjvsmjk .gt_super {
+#fhqcojnxqa .gt_super {
   font-size: 65%;
 }
 
-#nzajjvsmjk .gt_footnote_marks {
+#fhqcojnxqa .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#nzajjvsmjk .gt_asterisk {
+#fhqcojnxqa .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#nzajjvsmjk .gt_indent_1 {
+#fhqcojnxqa .gt_indent_1 {
   text-indent: 5px;
 }
 
-#nzajjvsmjk .gt_indent_2 {
+#fhqcojnxqa .gt_indent_2 {
   text-indent: 10px;
 }
 
-#nzajjvsmjk .gt_indent_3 {
+#fhqcojnxqa .gt_indent_3 {
   text-indent: 15px;
 }
 
-#nzajjvsmjk .gt_indent_4 {
+#fhqcojnxqa .gt_indent_4 {
   text-indent: 20px;
 }
 
-#nzajjvsmjk .gt_indent_5 {
+#fhqcojnxqa .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+
+<table class="gt_table do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="header gt_col_headings">
+<th id="Modelo" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Modelo</th>
+<th id="Pronóstico" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Pronóstico</th>
+<th id="Banxico" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Banxico</th>
+<th id="Error" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Error</th>
+<th id="Error porcentual" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Error porcentual</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="Modelo">ARIMA</td>
+<td class="gt_row gt_right" headers="Pronóstico">0.44</td>
+<td class="gt_row gt_right" headers="Banxico">3.73</td>
+<td class="gt_row gt_right" headers="Error">−3.29</td>
+<td class="gt_row gt_right" headers="Error porcentual">−88.15</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Modelo">ETS</td>
+<td class="gt_row gt_right" headers="Pronóstico">1.95</td>
+<td class="gt_row gt_right" headers="Banxico">3.73</td>
+<td class="gt_row gt_right" headers="Error">−1.78</td>
+<td class="gt_row gt_right" headers="Error porcentual">−47.84</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Modelo">LM</td>
+<td class="gt_row gt_right" headers="Pronóstico">−0.63</td>
+<td class="gt_row gt_right" headers="Banxico">3.73</td>
+<td class="gt_row gt_right" headers="Error">−4.36</td>
+<td class="gt_row gt_right" headers="Error porcentual">−116.88</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Modelo">NNETAR</td>
+<td class="gt_row gt_right" headers="Pronóstico">3.16</td>
+<td class="gt_row gt_right" headers="Banxico">3.73</td>
+<td class="gt_row gt_right" headers="Error">−0.57</td>
+<td class="gt_row gt_right" headers="Error porcentual">−15.36</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</figure>
+</div>
+</div>
+</section>
+</section>
+<section id="sec-survey" class="level2">
+<h2 class="anchored" data-anchor-id="sec-survey">Poder predictivo de la encuesta de expectativas</h2>
+<p>Esta sección evalúa la capacidad predictiva de la encuesta de expectativas de inflación del Banco de México.</p>
+<p>La <a href="#fig-expectations" class="quarto-xref">Figura&nbsp;5</a> muestra que las predicciones intercuartílicas (primer cuatil, media, mediana, y tercer cuartil) tienen aproximadamente la misma capacidad predictiva a lo largo de todo el horizonte de predicción (de cero a doce meses de anticipación). Es importante destacar que los errores absolutos (MAE y RMSE) son no monotónicos; es decir,. las mejores predicciones son con anticipaciones cercanas a cero y a doce meses. Las peores predicciones son a seis meses de anticipación.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-expectations" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-expectations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="monthly_forecast_files/figure-html/fig-expectations-1.png" class="img-fluid figure-img" width="4500">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-expectations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5: Precisión de la encuesta de expectativas Banxico
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>La <a href="#tbl-expectations" class="quarto-xref">Tabla&nbsp;4</a> muestra que las predicciones intercuartílicas tienen un error cuadrático histórico de 0.41 puntos porcentuales. Al comparar con los errores de mis modelos en la <a href="#tbl-comp-2" class="quarto-xref">Tabla&nbsp;1 (b)</a>, el modelo NNETAR tuvo mejor desempeño que el histórico de los analistas.</p>
+<div class="cell">
+<div id="tbl-expectations" class="cell quarto-float anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-expectations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
+</figcaption>
+<div aria-describedby="tbl-expectations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<div id="fhqcojnxqa" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#fhqcojnxqa table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#fhqcojnxqa thead, #fhqcojnxqa tbody, #fhqcojnxqa tfoot, #fhqcojnxqa tr, #fhqcojnxqa td, #fhqcojnxqa th {
+  border-style: none;
+}
+
+#fhqcojnxqa p {
+  margin: 0;
+  padding: 0;
+}
+
+#fhqcojnxqa .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#fhqcojnxqa .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#fhqcojnxqa .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#fhqcojnxqa .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#fhqcojnxqa .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#fhqcojnxqa .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fhqcojnxqa .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#fhqcojnxqa .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#fhqcojnxqa .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#fhqcojnxqa .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#fhqcojnxqa .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#fhqcojnxqa .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#fhqcojnxqa .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#fhqcojnxqa .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#fhqcojnxqa .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#fhqcojnxqa .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#fhqcojnxqa .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#fhqcojnxqa .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#fhqcojnxqa .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fhqcojnxqa .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#fhqcojnxqa .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#fhqcojnxqa .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#fhqcojnxqa .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fhqcojnxqa .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#fhqcojnxqa .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#fhqcojnxqa .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fhqcojnxqa .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fhqcojnxqa .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#fhqcojnxqa .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fhqcojnxqa .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#fhqcojnxqa .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fhqcojnxqa .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#fhqcojnxqa .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fhqcojnxqa .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#fhqcojnxqa .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fhqcojnxqa .gt_left {
+  text-align: left;
+}
+
+#fhqcojnxqa .gt_center {
+  text-align: center;
+}
+
+#fhqcojnxqa .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#fhqcojnxqa .gt_font_normal {
+  font-weight: normal;
+}
+
+#fhqcojnxqa .gt_font_bold {
+  font-weight: bold;
+}
+
+#fhqcojnxqa .gt_font_italic {
+  font-style: italic;
+}
+
+#fhqcojnxqa .gt_super {
+  font-size: 65%;
+}
+
+#fhqcojnxqa .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#fhqcojnxqa .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#fhqcojnxqa .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#fhqcojnxqa .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#fhqcojnxqa .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#fhqcojnxqa .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#fhqcojnxqa .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -2253,13 +2788,20 @@ Hyndman, Rob J., y George Athanasopolous. 2021. <em>Forecasting: Principles and 
 <div id="ref-hyndman2008" class="csl-entry" role="listitem">
 Hyndman, Rob J., y Yeasmin Khandakar. 2008. <span>«Automatic <span>Time Series Forecasting</span>: <span>The</span> Forecast <span>Package</span> for <span>R</span>»</span>. <em>Journal of Statistical Software</em> 27 (julio): 1-22. <a href="https://doi.org/10.18637/jss.v027.i03">https://doi.org/10.18637/jss.v027.i03</a>.
 </div>
+<div id="ref-james2021a" class="csl-entry" role="listitem">
+James, Gareth, Daniela Witten, Trevor Hastie, y Robert Tibshirani. 2021. <em>An Introduction to Statistical Learning: With Applications in R</em>. 2nd ed. 2021 edition. New York NY: Springer.
+</div>
 </div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Notas</h2>
 
 <ol>
-<li id="fn1"><p>ME: <em>Median Error.-</em> Error de estimación promedio.</p>
+<li id="fn1"><p>ARIMA: Modelo autorregresivo integrado de media móvil.</p>
+<p>ETS: Suavización exponencial</p>
+<p>LM: Modelo lineal</p>
+<p>NNETAR: Redes neuronales para series de tiempo<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>ME: <em>Median Error.-</em> Error de estimación promedio.</p>
 <p>RMSE: <em>Root median squared error.-</em> Raíz cuadrada del error cuadrático medio.</p>
 <p>MAE: <em>Mean absolute error.-</em> Error absoluto promedio.</p>
-<p>MPE: <em>Mean percentage error.-</em> Error porcentual promedio.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<p>MPE: <em>Mean percentage error.-</em> Error porcentual promedio.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->
@@ -2283,6 +2825,150 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
