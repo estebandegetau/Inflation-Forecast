@@ -189,6 +189,7 @@ survey_history <- months |>
   group_by(stat) |>
   mutate(t = (month - t_0) |> dense_rank() - 1
   ) |>
+  ungroup() |>
   select(
     t,
     reference_date = date,
