@@ -1,5 +1,6 @@
 ---
-title: "Pronóstico de inflación"
+title: "Pronóstico de inflación en México"
+subtitle: "Un enfoque de aprendizaje automático"
 author: 
   - name: Esteban Degetau
     email: esteban.degetau@imss.gob.mx
@@ -29,6 +30,10 @@ format:
     fig-dpi: 500
     fig-width: 9
     fig-asp: 0.6
+  # pdf:
+  #   include-in-header:
+  #     - text: |
+  #         \usepackage[dvipsnames]{xcolor}    
   docx: default
 execute:
     echo: false
@@ -65,6 +70,7 @@ pacman::p_load(
 )
 
 
+
 theme_set(theme_minimal())
 
 ```
@@ -76,16 +82,16 @@ theme_set(theme_minimal())
 
 load(here::here("data/inputs.RData"))
 
-days_since_update <- (today() - as_date(updated_data) ) |>
-    as.numeric()
+updated_month <- updated_data |> month()
 
-if(days_since_update > 7) {
+month_day <- today() |> day()
+month <- today() |> month()
+
+if(month > updated_month & month_day >= 9) {
 
     source(here::here("R/00_run.R"))
 
     load(here::here("data/inputs.RData"))
-
-    here::i_am("reports/forecast_v2.qmd")
 
     theme_set(theme_minimal())
 
@@ -381,7 +387,7 @@ a
 
 La @tbl-banxico muestra la precisión de los modelos en la muestra completa respecto a la media de las expectativas de los analistas de Banxico. Es importante notar que el mejor modelo en nuestras pruebas (NNETAR) no es el que resultó estar más cerca del promedio de los analistas. Sin embargo, esto obliga hacer la pregunta ¿qué tan preciso puede ser el proimedio de analistas para predecir la inflación? La @sec-survey busca responder esta pregunta.
 
-Otra manera de medir la precisión del pronóstico es comparando la inflaicón anual para 2025 con la media de las expectativas de los analistas de Banxico. La @tbl-yearly muestra que el modelo NNETAR tuvo la predicción más cercana a la encuesta de expectativas.
+Otra manera de medir la precisión del pronóstico es comparando la inflaicón anual para 2025 con la media de las expectativas de los analistas de Banxico. La @tbl-yearly muestra que el modelo NNETAR tuvo una predicción muy cercana a la expectativa promedio de los analistas de Banxico.
 
 ```{r}
 #| label: tbl-banxico
@@ -595,7 +601,7 @@ La @tbl-expectations muestra que las predicciones intercuartílicas tienen un er
 #| label: tbl-expectations
 #| tbl-cap: Precisión histórica de la encuesta de expectativas Banxico
 
-survey_comp |>
+hist_svy_acc <- survey_comp |>
     group_by(stat) |>
     summarise(
         MAE = mean(abs(error)),
@@ -625,9 +631,13 @@ survey_comp |>
             "MPE"
         ))
     ) |>
+  
   pivot_wider(
     names_from = measure
   ) |>
+  arrange(stat) 
+
+hist_svy_acc |>
   rename(
     "Estadístico" = stat
   ) |>
@@ -640,7 +650,23 @@ survey_comp |>
 ```
 
 
+## Conclusión
 
+```{r}
+
+best_rmse <- models |>
+    filter(name == best_outside) |>
+    pull(test) |>
+    unlist() |>
+    pluck("RMSE")
+
+svy_rmse <- hist_svy_acc |>
+  filter(stat == "Media") |>
+  pull(RMSE) 
+
+```
+
+El mejor de los modelos que entrené resultó ser más preciso que la expectativa media de los analistas encuestados por Banco de México históricamente. En particular, el modelo `r best_outside` tuvo un error cuadrático medio de `r best_rmse |> round(2)` en el periodo de prueba, mientras que la el promedio de los analistas tuvo un error cuadrático medio histórico de `r svy_rmse |> round(2)` puntos porcentuales. 
 
 ## Referencias
 
