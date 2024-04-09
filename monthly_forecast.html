@@ -8,7 +8,7 @@
 
 <meta name="author" content="Esteban Degetau">
 
-<title>Pronóstico de inflación</title>
+<title>Pronóstico de inflación en México</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -74,6 +74,7 @@ div.csl-indent {
   <li><a href="#pronóstico-ex-ante" id="toc-pronóstico-ex-ante" class="nav-link" data-scroll-target="#pronóstico-ex-ante">Pronóstico ex-ante</a></li>
   </ul></li>
   <li><a href="#sec-survey" id="toc-sec-survey" class="nav-link" data-scroll-target="#sec-survey">Poder predictivo de la encuesta de expectativas</a></li>
+  <li><a href="#conclusión" id="toc-conclusión" class="nav-link" data-scroll-target="#conclusión">Conclusión</a></li>
   <li><a href="#referencias" id="toc-referencias" class="nav-link" data-scroll-target="#referencias">Referencias</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Otros formatos</h2><ul><li><a href="monthly_forecast.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div><div class="quarto-other-links"><h2>Otros Enlaces</h2><ul><li><a href="data/forecasts.csv"><i class="bi bi-download"></i>Pronósticos</a></li><li><a href="data/tests.csv"><i class="bi bi-download"></i>Pruebas</a></li><li><a href="data/banxico_survey.csv"><i class="bi bi-download"></i>Encuesta Banxico</a></li></ul></div><div class="quarto-code-links"><h2>Enlaces de código</h2><ul><li><a href="https://github.com/estebandegetau/Inflation-Forecast"><i class="bi bi-github"></i>Código fuente</a></li></ul></div></nav>
@@ -82,7 +83,8 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Pronóstico de inflación</h1>
+<h1 class="title">Pronóstico de inflación en México</h1>
+<p class="subtitle lead">Un enfoque de aprendizaje automático</p>
 </div>
 
 
@@ -115,7 +117,7 @@ Nota
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Este reporte se actualizó por última vez el 02 abril 2024 a las 12:05 hrs CDMX.</p>
+<p>Este reporte se actualizó por última vez el 09 abril 2024 a las 08:44 hrs CDMX.</p>
 </div>
 </div>
 <section id="modelos-univariados" class="level2 page-columns page-full">
@@ -124,7 +126,7 @@ Nota
 <p>En esta sección, comparamos los modelos ARIMA, ETS, LM, y NNETAR para predecir la inflación mensual en México.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> De estos, el modelo ARIMA es el más conocido y utilizado en la literatura. Los modelos ETS y LM son útiles por ser más simples. Por último, el modelo NNETAR es un modelo de redes neuronales para series de tiempo que ha demostrado ser útil en la predicción de series de tiempo <span class="citation" data-cites="allen2022">(<a href="#ref-allen2022" role="doc-biblioref">Allen 2022</a>)</span>.</p>
 <section id="probando-los-modelos" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="probando-los-modelos">Probando los modelos</h3>
-<p>Una manera de comparar distintos modelos de predicción es evaluar su precisión en un conjunto de datos externo; es decir, en un conjunto de datos que no se utilizó para ajustar los modelos <span class="citation" data-cites="hyndman2021 james2021a">(<a href="#ref-hyndman2021" role="doc-biblioref">Hyndman y Athanasopolous 2021</a>; <a href="#ref-james2021a" role="doc-biblioref">James et&nbsp;al. 2021</a>)</span>. En este caso, utilizamos los datos de inflación mensual desde enero 1994 hasta abril 2022 para ajustar los modelos y los datos desde mayo 2022 hasta febrero 2024 para evaluar su precisión. La <a href="#fig-timeline" class="quarto-xref">Figura&nbsp;1</a> muestra la serie de tiempo de inflación mensual (mes con mes) y los periodos de entrenamiento y prueba.</p>
+<p>Una manera de comparar distintos modelos de predicción es evaluar su precisión en un conjunto de datos externo; es decir, en un conjunto de datos que no se utilizó para ajustar los modelos <span class="citation" data-cites="hyndman2021 james2021a">(<a href="#ref-hyndman2021" role="doc-biblioref">Hyndman y Athanasopolous 2021</a>; <a href="#ref-james2021a" role="doc-biblioref">James et&nbsp;al. 2021</a>)</span>. En este caso, utilizamos los datos de inflación mensual desde enero 1994 hasta junio 2022 para ajustar los modelos y los datos desde julio 2022 hasta marzo 2024 para evaluar su precisión. La <a href="#fig-timeline" class="quarto-xref">Figura&nbsp;1</a> muestra la serie de tiempo de inflación mensual (mes con mes) y los periodos de entrenamiento y prueba.</p>
 <div class="cell page-columns page-full">
 <div class="cell-output-display page-columns page-full">
 <div id="fig-timeline" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full">
@@ -162,23 +164,23 @@ Tabla&nbsp;1: Precisión de los modelos
 <div aria-describedby="tbl-comp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-layout-row">
 <div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="tbl-comp" style="flex-basis: 50.0%;justify-content: center;">
-<div id="gmthwasqjb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#gmthwasqjb table {
+<div id="tgmjlliknq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#tgmjlliknq table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#gmthwasqjb thead, #gmthwasqjb tbody, #gmthwasqjb tfoot, #gmthwasqjb tr, #gmthwasqjb td, #gmthwasqjb th {
+#tgmjlliknq thead, #tgmjlliknq tbody, #tgmjlliknq tfoot, #tgmjlliknq tr, #tgmjlliknq td, #tgmjlliknq th {
   border-style: none;
 }
 
-#gmthwasqjb p {
+#tgmjlliknq p {
   margin: 0;
   padding: 0;
 }
 
-#gmthwasqjb .gt_table {
+#tgmjlliknq .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -204,12 +206,12 @@ Tabla&nbsp;1: Precisión de los modelos
   border-left-color: #D3D3D3;
 }
 
-#gmthwasqjb .gt_caption {
+#tgmjlliknq .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#gmthwasqjb .gt_title {
+#tgmjlliknq .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -221,7 +223,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-bottom-width: 0;
 }
 
-#gmthwasqjb .gt_subtitle {
+#tgmjlliknq .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -233,7 +235,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-top-width: 0;
 }
 
-#gmthwasqjb .gt_heading {
+#tgmjlliknq .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -245,13 +247,13 @@ Tabla&nbsp;1: Precisión de los modelos
   border-right-color: #D3D3D3;
 }
 
-#gmthwasqjb .gt_bottom_border {
+#tgmjlliknq .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#gmthwasqjb .gt_col_headings {
+#tgmjlliknq .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -266,7 +268,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-right-color: #D3D3D3;
 }
 
-#gmthwasqjb .gt_col_heading {
+#tgmjlliknq .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -286,7 +288,7 @@ Tabla&nbsp;1: Precisión de los modelos
   overflow-x: hidden;
 }
 
-#gmthwasqjb .gt_column_spanner_outer {
+#tgmjlliknq .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -298,15 +300,15 @@ Tabla&nbsp;1: Precisión de los modelos
   padding-right: 4px;
 }
 
-#gmthwasqjb .gt_column_spanner_outer:first-child {
+#tgmjlliknq .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#gmthwasqjb .gt_column_spanner_outer:last-child {
+#tgmjlliknq .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#gmthwasqjb .gt_column_spanner {
+#tgmjlliknq .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -318,11 +320,11 @@ Tabla&nbsp;1: Precisión de los modelos
   width: 100%;
 }
 
-#gmthwasqjb .gt_spanner_row {
+#tgmjlliknq .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#gmthwasqjb .gt_group_heading {
+#tgmjlliknq .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -348,7 +350,7 @@ Tabla&nbsp;1: Precisión de los modelos
   text-align: left;
 }
 
-#gmthwasqjb .gt_empty_group_heading {
+#tgmjlliknq .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -363,15 +365,15 @@ Tabla&nbsp;1: Precisión de los modelos
   vertical-align: middle;
 }
 
-#gmthwasqjb .gt_from_md > :first-child {
+#tgmjlliknq .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#gmthwasqjb .gt_from_md > :last-child {
+#tgmjlliknq .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#gmthwasqjb .gt_row {
+#tgmjlliknq .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -390,7 +392,7 @@ Tabla&nbsp;1: Precisión de los modelos
   overflow-x: hidden;
 }
 
-#gmthwasqjb .gt_stub {
+#tgmjlliknq .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -403,7 +405,7 @@ Tabla&nbsp;1: Precisión de los modelos
   padding-right: 5px;
 }
 
-#gmthwasqjb .gt_stub_row_group {
+#tgmjlliknq .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -417,15 +419,15 @@ Tabla&nbsp;1: Precisión de los modelos
   vertical-align: top;
 }
 
-#gmthwasqjb .gt_row_group_first td {
+#tgmjlliknq .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#gmthwasqjb .gt_row_group_first th {
+#tgmjlliknq .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#gmthwasqjb .gt_summary_row {
+#tgmjlliknq .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -435,16 +437,16 @@ Tabla&nbsp;1: Precisión de los modelos
   padding-right: 5px;
 }
 
-#gmthwasqjb .gt_first_summary_row {
+#tgmjlliknq .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#gmthwasqjb .gt_first_summary_row.thick {
+#tgmjlliknq .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#gmthwasqjb .gt_last_summary_row {
+#tgmjlliknq .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -454,7 +456,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-bottom-color: #D3D3D3;
 }
 
-#gmthwasqjb .gt_grand_summary_row {
+#tgmjlliknq .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -464,7 +466,7 @@ Tabla&nbsp;1: Precisión de los modelos
   padding-right: 5px;
 }
 
-#gmthwasqjb .gt_first_grand_summary_row {
+#tgmjlliknq .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -474,7 +476,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-top-color: #D3D3D3;
 }
 
-#gmthwasqjb .gt_last_grand_summary_row_top {
+#tgmjlliknq .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -484,11 +486,11 @@ Tabla&nbsp;1: Precisión de los modelos
   border-bottom-color: #D3D3D3;
 }
 
-#gmthwasqjb .gt_striped {
+#tgmjlliknq .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#gmthwasqjb .gt_table_body {
+#tgmjlliknq .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -497,7 +499,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-bottom-color: #D3D3D3;
 }
 
-#gmthwasqjb .gt_footnotes {
+#tgmjlliknq .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -511,7 +513,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-right-color: #D3D3D3;
 }
 
-#gmthwasqjb .gt_footnote {
+#tgmjlliknq .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -520,7 +522,7 @@ Tabla&nbsp;1: Precisión de los modelos
   padding-right: 5px;
 }
 
-#gmthwasqjb .gt_sourcenotes {
+#tgmjlliknq .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -534,7 +536,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-right-color: #D3D3D3;
 }
 
-#gmthwasqjb .gt_sourcenote {
+#tgmjlliknq .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -542,68 +544,68 @@ Tabla&nbsp;1: Precisión de los modelos
   padding-right: 5px;
 }
 
-#gmthwasqjb .gt_left {
+#tgmjlliknq .gt_left {
   text-align: left;
 }
 
-#gmthwasqjb .gt_center {
+#tgmjlliknq .gt_center {
   text-align: center;
 }
 
-#gmthwasqjb .gt_right {
+#tgmjlliknq .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#gmthwasqjb .gt_font_normal {
+#tgmjlliknq .gt_font_normal {
   font-weight: normal;
 }
 
-#gmthwasqjb .gt_font_bold {
+#tgmjlliknq .gt_font_bold {
   font-weight: bold;
 }
 
-#gmthwasqjb .gt_font_italic {
+#tgmjlliknq .gt_font_italic {
   font-style: italic;
 }
 
-#gmthwasqjb .gt_super {
+#tgmjlliknq .gt_super {
   font-size: 65%;
 }
 
-#gmthwasqjb .gt_footnote_marks {
+#tgmjlliknq .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#gmthwasqjb .gt_asterisk {
+#tgmjlliknq .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#gmthwasqjb .gt_indent_1 {
+#tgmjlliknq .gt_indent_1 {
   text-indent: 5px;
 }
 
-#gmthwasqjb .gt_indent_2 {
+#tgmjlliknq .gt_indent_2 {
   text-indent: 10px;
 }
 
-#gmthwasqjb .gt_indent_3 {
+#tgmjlliknq .gt_indent_3 {
   text-indent: 15px;
 }
 
-#gmthwasqjb .gt_indent_4 {
+#tgmjlliknq .gt_indent_4 {
   text-indent: 20px;
 }
 
-#gmthwasqjb .gt_indent_5 {
+#tgmjlliknq .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
 
-<div id="tbl-comp-1" class="gt_table do-not-create-environment quarto-float anchored" data-quarto-bootstrap="false" data-quarto-postprocess="true" data-quarto-disable-processing="false">
+<div id="tbl-comp-1" class="gt_table do-not-create-environment quarto-float anchored" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <figure class="quarto-float quarto-subfloat-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-comp-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (a) Muestra de entrenamiento
@@ -623,30 +625,30 @@ Tabla&nbsp;1: Precisión de los modelos
 <tr class="odd">
 <td class="gt_row gt_left" style="text-align: left;" headers="Modelo">ARIMA</td>
 <td class="gt_row gt_right" style="text-align: left;" headers="ME">−0.01</td>
-<td class="gt_row gt_right" style="text-align: left;" headers="RMSE">0.45</td>
+<td class="gt_row gt_right" style="text-align: left;" headers="RMSE">0.46</td>
 <td class="gt_row gt_right" style="text-align: left;" headers="MAE">0.28</td>
-<td class="gt_row gt_right" style="text-align: left;" headers="MPE">−36.96</td>
+<td class="gt_row gt_right" style="text-align: left;" headers="MPE">−37.80</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" style="text-align: left;" headers="Modelo">ETS</td>
 <td class="gt_row gt_right" style="text-align: left;" headers="ME">0.00</td>
-<td class="gt_row gt_right" style="text-align: left;" headers="RMSE">0.45</td>
-<td class="gt_row gt_right" style="text-align: left;" headers="MAE">0.28</td>
-<td class="gt_row gt_right" style="text-align: left;" headers="MPE">−56.89</td>
+<td class="gt_row gt_right" style="text-align: left;" headers="RMSE">0.44</td>
+<td class="gt_row gt_right" style="text-align: left;" headers="MAE">0.29</td>
+<td class="gt_row gt_right" style="text-align: left;" headers="MPE">−52.70</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" style="text-align: left;" headers="Modelo">LM</td>
 <td class="gt_row gt_right" style="text-align: left;" headers="ME">0.00</td>
-<td class="gt_row gt_right" style="text-align: left;" headers="RMSE">0.72</td>
+<td class="gt_row gt_right" style="text-align: left;" headers="RMSE">0.73</td>
 <td class="gt_row gt_right" style="text-align: left;" headers="MAE">0.44</td>
-<td class="gt_row gt_right" style="text-align: left;" headers="MPE">−61.10</td>
+<td class="gt_row gt_right" style="text-align: left;" headers="MPE">−56.69</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" style="text-align: left;" headers="Modelo">NNETAR</td>
 <td class="gt_row gt_right" style="text-align: left;" headers="ME">0.00</td>
-<td class="gt_row gt_right" style="text-align: left;" headers="RMSE">0.30</td>
-<td class="gt_row gt_right" style="text-align: left;" headers="MAE">0.20</td>
-<td class="gt_row gt_right" style="text-align: left;" headers="MPE">−3.72</td>
+<td class="gt_row gt_right" style="text-align: left;" headers="RMSE">0.02</td>
+<td class="gt_row gt_right" style="text-align: left;" headers="MAE">0.01</td>
+<td class="gt_row gt_right" style="text-align: left;" headers="MPE">−1.35</td>
 </tr>
 </tbody>
 </table>
@@ -657,23 +659,23 @@ Tabla&nbsp;1: Precisión de los modelos
 </div>
 </div>
 <div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="tbl-comp" style="flex-basis: 50.0%;justify-content: center;">
-<div id="ennbjafwyv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ennbjafwyv table {
+<div id="jxejcnifye" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#jxejcnifye table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ennbjafwyv thead, #ennbjafwyv tbody, #ennbjafwyv tfoot, #ennbjafwyv tr, #ennbjafwyv td, #ennbjafwyv th {
+#jxejcnifye thead, #jxejcnifye tbody, #jxejcnifye tfoot, #jxejcnifye tr, #jxejcnifye td, #jxejcnifye th {
   border-style: none;
 }
 
-#ennbjafwyv p {
+#jxejcnifye p {
   margin: 0;
   padding: 0;
 }
 
-#ennbjafwyv .gt_table {
+#jxejcnifye .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -699,12 +701,12 @@ Tabla&nbsp;1: Precisión de los modelos
   border-left-color: #D3D3D3;
 }
 
-#ennbjafwyv .gt_caption {
+#jxejcnifye .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ennbjafwyv .gt_title {
+#jxejcnifye .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -716,7 +718,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-bottom-width: 0;
 }
 
-#ennbjafwyv .gt_subtitle {
+#jxejcnifye .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -728,7 +730,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-top-width: 0;
 }
 
-#ennbjafwyv .gt_heading {
+#jxejcnifye .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -740,13 +742,13 @@ Tabla&nbsp;1: Precisión de los modelos
   border-right-color: #D3D3D3;
 }
 
-#ennbjafwyv .gt_bottom_border {
+#jxejcnifye .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ennbjafwyv .gt_col_headings {
+#jxejcnifye .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -761,7 +763,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-right-color: #D3D3D3;
 }
 
-#ennbjafwyv .gt_col_heading {
+#jxejcnifye .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -781,7 +783,7 @@ Tabla&nbsp;1: Precisión de los modelos
   overflow-x: hidden;
 }
 
-#ennbjafwyv .gt_column_spanner_outer {
+#jxejcnifye .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -793,15 +795,15 @@ Tabla&nbsp;1: Precisión de los modelos
   padding-right: 4px;
 }
 
-#ennbjafwyv .gt_column_spanner_outer:first-child {
+#jxejcnifye .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ennbjafwyv .gt_column_spanner_outer:last-child {
+#jxejcnifye .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ennbjafwyv .gt_column_spanner {
+#jxejcnifye .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -813,11 +815,11 @@ Tabla&nbsp;1: Precisión de los modelos
   width: 100%;
 }
 
-#ennbjafwyv .gt_spanner_row {
+#jxejcnifye .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ennbjafwyv .gt_group_heading {
+#jxejcnifye .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -843,7 +845,7 @@ Tabla&nbsp;1: Precisión de los modelos
   text-align: left;
 }
 
-#ennbjafwyv .gt_empty_group_heading {
+#jxejcnifye .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -858,15 +860,15 @@ Tabla&nbsp;1: Precisión de los modelos
   vertical-align: middle;
 }
 
-#ennbjafwyv .gt_from_md > :first-child {
+#jxejcnifye .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ennbjafwyv .gt_from_md > :last-child {
+#jxejcnifye .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ennbjafwyv .gt_row {
+#jxejcnifye .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -885,7 +887,7 @@ Tabla&nbsp;1: Precisión de los modelos
   overflow-x: hidden;
 }
 
-#ennbjafwyv .gt_stub {
+#jxejcnifye .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -898,7 +900,7 @@ Tabla&nbsp;1: Precisión de los modelos
   padding-right: 5px;
 }
 
-#ennbjafwyv .gt_stub_row_group {
+#jxejcnifye .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -912,15 +914,15 @@ Tabla&nbsp;1: Precisión de los modelos
   vertical-align: top;
 }
 
-#ennbjafwyv .gt_row_group_first td {
+#jxejcnifye .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ennbjafwyv .gt_row_group_first th {
+#jxejcnifye .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ennbjafwyv .gt_summary_row {
+#jxejcnifye .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -930,16 +932,16 @@ Tabla&nbsp;1: Precisión de los modelos
   padding-right: 5px;
 }
 
-#ennbjafwyv .gt_first_summary_row {
+#jxejcnifye .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ennbjafwyv .gt_first_summary_row.thick {
+#jxejcnifye .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ennbjafwyv .gt_last_summary_row {
+#jxejcnifye .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -949,7 +951,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-bottom-color: #D3D3D3;
 }
 
-#ennbjafwyv .gt_grand_summary_row {
+#jxejcnifye .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -959,7 +961,7 @@ Tabla&nbsp;1: Precisión de los modelos
   padding-right: 5px;
 }
 
-#ennbjafwyv .gt_first_grand_summary_row {
+#jxejcnifye .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -969,7 +971,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-top-color: #D3D3D3;
 }
 
-#ennbjafwyv .gt_last_grand_summary_row_top {
+#jxejcnifye .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -979,11 +981,11 @@ Tabla&nbsp;1: Precisión de los modelos
   border-bottom-color: #D3D3D3;
 }
 
-#ennbjafwyv .gt_striped {
+#jxejcnifye .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ennbjafwyv .gt_table_body {
+#jxejcnifye .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -992,7 +994,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-bottom-color: #D3D3D3;
 }
 
-#ennbjafwyv .gt_footnotes {
+#jxejcnifye .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1006,7 +1008,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-right-color: #D3D3D3;
 }
 
-#ennbjafwyv .gt_footnote {
+#jxejcnifye .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1015,7 +1017,7 @@ Tabla&nbsp;1: Precisión de los modelos
   padding-right: 5px;
 }
 
-#ennbjafwyv .gt_sourcenotes {
+#jxejcnifye .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1029,7 +1031,7 @@ Tabla&nbsp;1: Precisión de los modelos
   border-right-color: #D3D3D3;
 }
 
-#ennbjafwyv .gt_sourcenote {
+#jxejcnifye .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1037,68 +1039,68 @@ Tabla&nbsp;1: Precisión de los modelos
   padding-right: 5px;
 }
 
-#ennbjafwyv .gt_left {
+#jxejcnifye .gt_left {
   text-align: left;
 }
 
-#ennbjafwyv .gt_center {
+#jxejcnifye .gt_center {
   text-align: center;
 }
 
-#ennbjafwyv .gt_right {
+#jxejcnifye .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ennbjafwyv .gt_font_normal {
+#jxejcnifye .gt_font_normal {
   font-weight: normal;
 }
 
-#ennbjafwyv .gt_font_bold {
+#jxejcnifye .gt_font_bold {
   font-weight: bold;
 }
 
-#ennbjafwyv .gt_font_italic {
+#jxejcnifye .gt_font_italic {
   font-style: italic;
 }
 
-#ennbjafwyv .gt_super {
+#jxejcnifye .gt_super {
   font-size: 65%;
 }
 
-#ennbjafwyv .gt_footnote_marks {
+#jxejcnifye .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ennbjafwyv .gt_asterisk {
+#jxejcnifye .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ennbjafwyv .gt_indent_1 {
+#jxejcnifye .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ennbjafwyv .gt_indent_2 {
+#jxejcnifye .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ennbjafwyv .gt_indent_3 {
+#jxejcnifye .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ennbjafwyv .gt_indent_4 {
+#jxejcnifye .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ennbjafwyv .gt_indent_5 {
+#jxejcnifye .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
 
-<div id="tbl-comp-2" class="gt_table do-not-create-environment quarto-float anchored" data-quarto-bootstrap="false" data-quarto-postprocess="true" data-quarto-disable-processing="false">
+<div id="tbl-comp-2" class="gt_table do-not-create-environment quarto-float anchored" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <figure class="quarto-float quarto-subfloat-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-comp-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (b) Muestra de prueba
@@ -1117,31 +1119,31 @@ Tabla&nbsp;1: Precisión de los modelos
 <tbody class="gt_table_body">
 <tr class="odd">
 <td class="gt_row gt_left" style="text-align: left;" headers="Modelo">ARIMA</td>
-<td class="gt_row gt_right" style="text-align: left;" headers="ME">0.62</td>
-<td class="gt_row gt_right" style="text-align: left;" headers="RMSE">0.70</td>
-<td class="gt_row gt_right" style="text-align: left;" headers="MAE">0.62</td>
-<td class="gt_row gt_right" style="text-align: left;" headers="MPE">−44.73</td>
+<td class="gt_row gt_right" style="text-align: left;" headers="ME">0.52</td>
+<td class="gt_row gt_right" style="text-align: left;" headers="RMSE">0.59</td>
+<td class="gt_row gt_right" style="text-align: left;" headers="MAE">0.52</td>
+<td class="gt_row gt_right" style="text-align: left;" headers="MPE">−50.13</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" style="text-align: left;" headers="Modelo">ETS</td>
-<td class="gt_row gt_right" style="text-align: left;" headers="ME">0.52</td>
-<td class="gt_row gt_right" style="text-align: left;" headers="RMSE">0.57</td>
-<td class="gt_row gt_right" style="text-align: left;" headers="MAE">0.52</td>
-<td class="gt_row gt_right" style="text-align: left;" headers="MPE">22.15</td>
+<td class="gt_row gt_right" style="text-align: left;" headers="ME">0.40</td>
+<td class="gt_row gt_right" style="text-align: left;" headers="RMSE">0.45</td>
+<td class="gt_row gt_right" style="text-align: left;" headers="MAE">0.40</td>
+<td class="gt_row gt_right" style="text-align: left;" headers="MPE">18.96</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" style="text-align: left;" headers="Modelo">LM</td>
-<td class="gt_row gt_right" style="text-align: left;" headers="ME">−0.54</td>
-<td class="gt_row gt_right" style="text-align: left;" headers="RMSE">0.60</td>
-<td class="gt_row gt_right" style="text-align: left;" headers="MAE">0.54</td>
-<td class="gt_row gt_right" style="text-align: left;" headers="MPE">−77.84</td>
+<td class="gt_row gt_right" style="text-align: left;" headers="ME">−0.48</td>
+<td class="gt_row gt_right" style="text-align: left;" headers="RMSE">0.53</td>
+<td class="gt_row gt_right" style="text-align: left;" headers="MAE">0.48</td>
+<td class="gt_row gt_right" style="text-align: left;" headers="MPE">−59.41</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" style="text-align: left;" headers="Modelo">NNETAR</td>
-<td class="gt_row gt_right" style="text-align: left;" headers="ME">0.02</td>
-<td class="gt_row gt_right" style="text-align: left;" headers="RMSE">0.28</td>
+<td class="gt_row gt_right" style="text-align: left;" headers="ME">−0.07</td>
+<td class="gt_row gt_right" style="text-align: left;" headers="RMSE">0.31</td>
 <td class="gt_row gt_right" style="text-align: left;" headers="MAE">0.23</td>
-<td class="gt_row gt_right" style="text-align: left;" headers="MPE">−79.03</td>
+<td class="gt_row gt_right" style="text-align: left;" headers="MPE">−50.07</td>
 </tr>
 </tbody>
 </table>
@@ -1159,8 +1161,8 @@ Tabla&nbsp;1: Precisión de los modelos
 </section>
 <section id="pronóstico-ex-ante" class="level3">
 <h3 class="anchored" data-anchor-id="pronóstico-ex-ante">Pronóstico ex-ante</h3>
-<p>Sabiendo cuán precisos son los modelos, procedo a pronosticar la inflación mensual en México desde marzo 2024 hasta diciembre 2025. Solo para fines comparativos, utilizaré todos los modelos aunque el mejor fue indiscutiblemente NNETAR.</p>
-<p>La <a href="#fig-forecast" class="quarto-xref">Figura&nbsp;3</a> muestra los pronósticos de los modelos para los siguientes 22 meses. Algo importante para notar es que el modelo NNETAR (<a href="#fig-forecast-4" class="quarto-xref">Figura&nbsp;3 (d)</a>) no produce intervalos de confianza, puesto que las predicciones por redes neuronales pierden interpretabilidad y no permiten tener una medida de la varianza de la predicción.</p>
+<p>Sabiendo cuán precisos son los modelos, procedo a pronosticar la inflación mensual en México desde abril 2024 hasta diciembre 2025. Solo para fines comparativos, utilizaré todos los modelos aunque el mejor fue indiscutiblemente NNETAR.</p>
+<p>La <a href="#fig-forecast" class="quarto-xref">Figura&nbsp;3</a> muestra los pronósticos de los modelos para los siguientes 21 meses. Algo importante para notar es que el modelo NNETAR (<a href="#fig-forecast-4" class="quarto-xref">Figura&nbsp;3 (d)</a>) no produce intervalos de confianza, puesto que las predicciones por redes neuronales pierden interpretabilidad y no permiten tener una medida de la varianza de la predicción.</p>
 <div id="fig-forecast" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-forecast-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1238,7 +1240,7 @@ Figura&nbsp;4: Pronóstico de inflación mensual a doce meses vs media de encues
 </div>
 </div>
 <p>La <a href="#tbl-banxico" class="quarto-xref">Tabla&nbsp;2</a> muestra la precisión de los modelos en la muestra completa respecto a la media de las expectativas de los analistas de Banxico. Es importante notar que el mejor modelo en nuestras pruebas (NNETAR) no es el que resultó estar más cerca del promedio de los analistas. Sin embargo, esto obliga hacer la pregunta ¿qué tan preciso puede ser el proimedio de analistas para predecir la inflación? La <a href="#sec-survey" class="quarto-xref">Sección&nbsp;2</a> busca responder esta pregunta.</p>
-<p>Otra manera de medir la precisión del pronóstico es comparando la inflaicón anual para 2025 con la media de las expectativas de los analistas de Banxico. La <a href="#tbl-yearly" class="quarto-xref">Tabla&nbsp;3</a> muestra que el modelo NNETAR tuvo la predicción más cercana a la encuesta de expectativas.</p>
+<p>Otra manera de medir la precisión del pronóstico es comparando la inflaicón anual para 2025 con la media de las expectativas de los analistas de Banxico. La <a href="#tbl-yearly" class="quarto-xref">Tabla&nbsp;3</a> muestra que el modelo NNETAR tuvo una predicción muy cercana a la expectativa promedio de los analistas de Banxico.</p>
 <div class="cell">
 <div id="tbl-banxico" class="cell quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -1247,23 +1249,23 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
 </figcaption>
 <div aria-describedby="tbl-banxico-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="fynhfbiggq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#fynhfbiggq table {
+<div id="zvfuwifeuu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#zvfuwifeuu table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#fynhfbiggq thead, #fynhfbiggq tbody, #fynhfbiggq tfoot, #fynhfbiggq tr, #fynhfbiggq td, #fynhfbiggq th {
+#zvfuwifeuu thead, #zvfuwifeuu tbody, #zvfuwifeuu tfoot, #zvfuwifeuu tr, #zvfuwifeuu td, #zvfuwifeuu th {
   border-style: none;
 }
 
-#fynhfbiggq p {
+#zvfuwifeuu p {
   margin: 0;
   padding: 0;
 }
 
-#fynhfbiggq .gt_table {
+#zvfuwifeuu .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1289,12 +1291,12 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   border-left-color: #D3D3D3;
 }
 
-#fynhfbiggq .gt_caption {
+#zvfuwifeuu .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#fynhfbiggq .gt_title {
+#zvfuwifeuu .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1306,7 +1308,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   border-bottom-width: 0;
 }
 
-#fynhfbiggq .gt_subtitle {
+#zvfuwifeuu .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1318,7 +1320,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   border-top-width: 0;
 }
 
-#fynhfbiggq .gt_heading {
+#zvfuwifeuu .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1330,13 +1332,13 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   border-right-color: #D3D3D3;
 }
 
-#fynhfbiggq .gt_bottom_border {
+#zvfuwifeuu .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#fynhfbiggq .gt_col_headings {
+#zvfuwifeuu .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1351,7 +1353,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   border-right-color: #D3D3D3;
 }
 
-#fynhfbiggq .gt_col_heading {
+#zvfuwifeuu .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1371,7 +1373,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   overflow-x: hidden;
 }
 
-#fynhfbiggq .gt_column_spanner_outer {
+#zvfuwifeuu .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1383,15 +1385,15 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   padding-right: 4px;
 }
 
-#fynhfbiggq .gt_column_spanner_outer:first-child {
+#zvfuwifeuu .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#fynhfbiggq .gt_column_spanner_outer:last-child {
+#zvfuwifeuu .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#fynhfbiggq .gt_column_spanner {
+#zvfuwifeuu .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1403,11 +1405,11 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   width: 100%;
 }
 
-#fynhfbiggq .gt_spanner_row {
+#zvfuwifeuu .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#fynhfbiggq .gt_group_heading {
+#zvfuwifeuu .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1433,7 +1435,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   text-align: left;
 }
 
-#fynhfbiggq .gt_empty_group_heading {
+#zvfuwifeuu .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1448,15 +1450,15 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   vertical-align: middle;
 }
 
-#fynhfbiggq .gt_from_md > :first-child {
+#zvfuwifeuu .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#fynhfbiggq .gt_from_md > :last-child {
+#zvfuwifeuu .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#fynhfbiggq .gt_row {
+#zvfuwifeuu .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1475,7 +1477,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   overflow-x: hidden;
 }
 
-#fynhfbiggq .gt_stub {
+#zvfuwifeuu .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1488,7 +1490,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   padding-right: 5px;
 }
 
-#fynhfbiggq .gt_stub_row_group {
+#zvfuwifeuu .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1502,15 +1504,15 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   vertical-align: top;
 }
 
-#fynhfbiggq .gt_row_group_first td {
+#zvfuwifeuu .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#fynhfbiggq .gt_row_group_first th {
+#zvfuwifeuu .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#fynhfbiggq .gt_summary_row {
+#zvfuwifeuu .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1520,16 +1522,16 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   padding-right: 5px;
 }
 
-#fynhfbiggq .gt_first_summary_row {
+#zvfuwifeuu .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#fynhfbiggq .gt_first_summary_row.thick {
+#zvfuwifeuu .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#fynhfbiggq .gt_last_summary_row {
+#zvfuwifeuu .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1539,7 +1541,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   border-bottom-color: #D3D3D3;
 }
 
-#fynhfbiggq .gt_grand_summary_row {
+#zvfuwifeuu .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1549,7 +1551,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   padding-right: 5px;
 }
 
-#fynhfbiggq .gt_first_grand_summary_row {
+#zvfuwifeuu .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1559,7 +1561,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   border-top-color: #D3D3D3;
 }
 
-#fynhfbiggq .gt_last_grand_summary_row_top {
+#zvfuwifeuu .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1569,11 +1571,11 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   border-bottom-color: #D3D3D3;
 }
 
-#fynhfbiggq .gt_striped {
+#zvfuwifeuu .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#fynhfbiggq .gt_table_body {
+#zvfuwifeuu .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1582,7 +1584,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   border-bottom-color: #D3D3D3;
 }
 
-#fynhfbiggq .gt_footnotes {
+#zvfuwifeuu .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1596,7 +1598,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   border-right-color: #D3D3D3;
 }
 
-#fynhfbiggq .gt_footnote {
+#zvfuwifeuu .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1605,7 +1607,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   padding-right: 5px;
 }
 
-#fynhfbiggq .gt_sourcenotes {
+#zvfuwifeuu .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1619,7 +1621,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   border-right-color: #D3D3D3;
 }
 
-#fynhfbiggq .gt_sourcenote {
+#zvfuwifeuu .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1627,63 +1629,63 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
   padding-right: 5px;
 }
 
-#fynhfbiggq .gt_left {
+#zvfuwifeuu .gt_left {
   text-align: left;
 }
 
-#fynhfbiggq .gt_center {
+#zvfuwifeuu .gt_center {
   text-align: center;
 }
 
-#fynhfbiggq .gt_right {
+#zvfuwifeuu .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#fynhfbiggq .gt_font_normal {
+#zvfuwifeuu .gt_font_normal {
   font-weight: normal;
 }
 
-#fynhfbiggq .gt_font_bold {
+#zvfuwifeuu .gt_font_bold {
   font-weight: bold;
 }
 
-#fynhfbiggq .gt_font_italic {
+#zvfuwifeuu .gt_font_italic {
   font-style: italic;
 }
 
-#fynhfbiggq .gt_super {
+#zvfuwifeuu .gt_super {
   font-size: 65%;
 }
 
-#fynhfbiggq .gt_footnote_marks {
+#zvfuwifeuu .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#fynhfbiggq .gt_asterisk {
+#zvfuwifeuu .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#fynhfbiggq .gt_indent_1 {
+#zvfuwifeuu .gt_indent_1 {
   text-indent: 5px;
 }
 
-#fynhfbiggq .gt_indent_2 {
+#zvfuwifeuu .gt_indent_2 {
   text-indent: 10px;
 }
 
-#fynhfbiggq .gt_indent_3 {
+#zvfuwifeuu .gt_indent_3 {
   text-indent: 15px;
 }
 
-#fynhfbiggq .gt_indent_4 {
+#zvfuwifeuu .gt_indent_4 {
   text-indent: 20px;
 }
 
-#fynhfbiggq .gt_indent_5 {
+#zvfuwifeuu .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1701,31 +1703,31 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
 <tbody class="gt_table_body">
 <tr class="odd">
 <td class="gt_row gt_left" headers="Modelo">ARIMA</td>
-<td class="gt_row gt_right" headers="ME">−0.21</td>
-<td class="gt_row gt_right" headers="RMSE">0.25</td>
-<td class="gt_row gt_right" headers="MAE">0.22</td>
-<td class="gt_row gt_right" headers="MPE">−52.73</td>
+<td class="gt_row gt_right" headers="ME">−0.02</td>
+<td class="gt_row gt_right" headers="RMSE">0.13</td>
+<td class="gt_row gt_right" headers="MAE">0.11</td>
+<td class="gt_row gt_right" headers="MPE">−66.16</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="Modelo">ETS</td>
-<td class="gt_row gt_right" headers="ME">−0.16</td>
-<td class="gt_row gt_right" headers="RMSE">0.18</td>
-<td class="gt_row gt_right" headers="MAE">0.16</td>
-<td class="gt_row gt_right" headers="MPE">−0.37</td>
+<td class="gt_row gt_right" headers="ME">−0.01</td>
+<td class="gt_row gt_right" headers="RMSE">0.05</td>
+<td class="gt_row gt_right" headers="MAE">0.05</td>
+<td class="gt_row gt_right" headers="MPE">19.02</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="Modelo">LM</td>
 <td class="gt_row gt_right" headers="ME">−0.34</td>
 <td class="gt_row gt_right" headers="RMSE">0.36</td>
 <td class="gt_row gt_right" headers="MAE">0.34</td>
-<td class="gt_row gt_right" headers="MPE">−46.39</td>
+<td class="gt_row gt_right" headers="MPE">−47.38</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="Modelo">NNETAR</td>
-<td class="gt_row gt_right" headers="ME">−0.01</td>
-<td class="gt_row gt_right" headers="RMSE">0.23</td>
-<td class="gt_row gt_right" headers="MAE">0.18</td>
-<td class="gt_row gt_right" headers="MPE">−0.49</td>
+<td class="gt_row gt_right" headers="ME">0.03</td>
+<td class="gt_row gt_right" headers="RMSE">0.17</td>
+<td class="gt_row gt_right" headers="MAE">0.12</td>
+<td class="gt_row gt_right" headers="MPE">1.54</td>
 </tr>
 </tbody>
 </table>
@@ -1744,23 +1746,23 @@ Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto
 </figcaption>
 <div aria-describedby="tbl-yearly-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="fhqcojnxqa" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#fhqcojnxqa table {
+<div id="jqowtvxshf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#jqowtvxshf table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#fhqcojnxqa thead, #fhqcojnxqa tbody, #fhqcojnxqa tfoot, #fhqcojnxqa tr, #fhqcojnxqa td, #fhqcojnxqa th {
+#jqowtvxshf thead, #jqowtvxshf tbody, #jqowtvxshf tfoot, #jqowtvxshf tr, #jqowtvxshf td, #jqowtvxshf th {
   border-style: none;
 }
 
-#fhqcojnxqa p {
+#jqowtvxshf p {
   margin: 0;
   padding: 0;
 }
 
-#fhqcojnxqa .gt_table {
+#jqowtvxshf .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1786,12 +1788,12 @@ Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto
   border-left-color: #D3D3D3;
 }
 
-#fhqcojnxqa .gt_caption {
+#jqowtvxshf .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#fhqcojnxqa .gt_title {
+#jqowtvxshf .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1803,7 +1805,7 @@ Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto
   border-bottom-width: 0;
 }
 
-#fhqcojnxqa .gt_subtitle {
+#jqowtvxshf .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1815,7 +1817,7 @@ Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto
   border-top-width: 0;
 }
 
-#fhqcojnxqa .gt_heading {
+#jqowtvxshf .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1827,13 +1829,13 @@ Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto
   border-right-color: #D3D3D3;
 }
 
-#fhqcojnxqa .gt_bottom_border {
+#jqowtvxshf .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#fhqcojnxqa .gt_col_headings {
+#jqowtvxshf .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1848,7 +1850,7 @@ Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto
   border-right-color: #D3D3D3;
 }
 
-#fhqcojnxqa .gt_col_heading {
+#jqowtvxshf .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1868,7 +1870,7 @@ Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto
   overflow-x: hidden;
 }
 
-#fhqcojnxqa .gt_column_spanner_outer {
+#jqowtvxshf .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1880,15 +1882,15 @@ Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto
   padding-right: 4px;
 }
 
-#fhqcojnxqa .gt_column_spanner_outer:first-child {
+#jqowtvxshf .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#fhqcojnxqa .gt_column_spanner_outer:last-child {
+#jqowtvxshf .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#fhqcojnxqa .gt_column_spanner {
+#jqowtvxshf .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1900,11 +1902,11 @@ Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto
   width: 100%;
 }
 
-#fhqcojnxqa .gt_spanner_row {
+#jqowtvxshf .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#fhqcojnxqa .gt_group_heading {
+#jqowtvxshf .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1930,7 +1932,7 @@ Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto
   text-align: left;
 }
 
-#fhqcojnxqa .gt_empty_group_heading {
+#jqowtvxshf .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1945,15 +1947,15 @@ Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto
   vertical-align: middle;
 }
 
-#fhqcojnxqa .gt_from_md > :first-child {
+#jqowtvxshf .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#fhqcojnxqa .gt_from_md > :last-child {
+#jqowtvxshf .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#fhqcojnxqa .gt_row {
+#jqowtvxshf .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1972,7 +1974,7 @@ Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto
   overflow-x: hidden;
 }
 
-#fhqcojnxqa .gt_stub {
+#jqowtvxshf .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1985,7 +1987,7 @@ Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto
   padding-right: 5px;
 }
 
-#fhqcojnxqa .gt_stub_row_group {
+#jqowtvxshf .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1999,15 +2001,15 @@ Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto
   vertical-align: top;
 }
 
-#fhqcojnxqa .gt_row_group_first td {
+#jqowtvxshf .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#fhqcojnxqa .gt_row_group_first th {
+#jqowtvxshf .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#fhqcojnxqa .gt_summary_row {
+#jqowtvxshf .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2017,16 +2019,16 @@ Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto
   padding-right: 5px;
 }
 
-#fhqcojnxqa .gt_first_summary_row {
+#jqowtvxshf .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#fhqcojnxqa .gt_first_summary_row.thick {
+#jqowtvxshf .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#fhqcojnxqa .gt_last_summary_row {
+#jqowtvxshf .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2036,7 +2038,7 @@ Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto
   border-bottom-color: #D3D3D3;
 }
 
-#fhqcojnxqa .gt_grand_summary_row {
+#jqowtvxshf .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2046,7 +2048,7 @@ Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto
   padding-right: 5px;
 }
 
-#fhqcojnxqa .gt_first_grand_summary_row {
+#jqowtvxshf .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2056,7 +2058,7 @@ Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto
   border-top-color: #D3D3D3;
 }
 
-#fhqcojnxqa .gt_last_grand_summary_row_top {
+#jqowtvxshf .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2066,11 +2068,11 @@ Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto
   border-bottom-color: #D3D3D3;
 }
 
-#fhqcojnxqa .gt_striped {
+#jqowtvxshf .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#fhqcojnxqa .gt_table_body {
+#jqowtvxshf .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2079,7 +2081,7 @@ Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto
   border-bottom-color: #D3D3D3;
 }
 
-#fhqcojnxqa .gt_footnotes {
+#jqowtvxshf .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2093,7 +2095,7 @@ Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto
   border-right-color: #D3D3D3;
 }
 
-#fhqcojnxqa .gt_footnote {
+#jqowtvxshf .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2102,7 +2104,7 @@ Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto
   padding-right: 5px;
 }
 
-#fhqcojnxqa .gt_sourcenotes {
+#jqowtvxshf .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2116,7 +2118,7 @@ Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto
   border-right-color: #D3D3D3;
 }
 
-#fhqcojnxqa .gt_sourcenote {
+#jqowtvxshf .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2124,63 +2126,63 @@ Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto
   padding-right: 5px;
 }
 
-#fhqcojnxqa .gt_left {
+#jqowtvxshf .gt_left {
   text-align: left;
 }
 
-#fhqcojnxqa .gt_center {
+#jqowtvxshf .gt_center {
   text-align: center;
 }
 
-#fhqcojnxqa .gt_right {
+#jqowtvxshf .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#fhqcojnxqa .gt_font_normal {
+#jqowtvxshf .gt_font_normal {
   font-weight: normal;
 }
 
-#fhqcojnxqa .gt_font_bold {
+#jqowtvxshf .gt_font_bold {
   font-weight: bold;
 }
 
-#fhqcojnxqa .gt_font_italic {
+#jqowtvxshf .gt_font_italic {
   font-style: italic;
 }
 
-#fhqcojnxqa .gt_super {
+#jqowtvxshf .gt_super {
   font-size: 65%;
 }
 
-#fhqcojnxqa .gt_footnote_marks {
+#jqowtvxshf .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#fhqcojnxqa .gt_asterisk {
+#jqowtvxshf .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#fhqcojnxqa .gt_indent_1 {
+#jqowtvxshf .gt_indent_1 {
   text-indent: 5px;
 }
 
-#fhqcojnxqa .gt_indent_2 {
+#jqowtvxshf .gt_indent_2 {
   text-indent: 10px;
 }
 
-#fhqcojnxqa .gt_indent_3 {
+#jqowtvxshf .gt_indent_3 {
   text-indent: 15px;
 }
 
-#fhqcojnxqa .gt_indent_4 {
+#jqowtvxshf .gt_indent_4 {
   text-indent: 20px;
 }
 
-#fhqcojnxqa .gt_indent_5 {
+#jqowtvxshf .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -2198,31 +2200,31 @@ Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto
 <tbody class="gt_table_body">
 <tr class="odd">
 <td class="gt_row gt_left" headers="Modelo">ARIMA</td>
-<td class="gt_row gt_right" headers="Pronóstico">0.44</td>
+<td class="gt_row gt_right" headers="Pronóstico">3.33</td>
 <td class="gt_row gt_right" headers="Banxico">3.73</td>
-<td class="gt_row gt_right" headers="Error">−3.29</td>
-<td class="gt_row gt_right" headers="Error porcentual">−88.15</td>
+<td class="gt_row gt_right" headers="Error">−0.40</td>
+<td class="gt_row gt_right" headers="Error porcentual">−10.63</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="Modelo">ETS</td>
-<td class="gt_row gt_right" headers="Pronóstico">1.95</td>
+<td class="gt_row gt_right" headers="Pronóstico">3.71</td>
 <td class="gt_row gt_right" headers="Banxico">3.73</td>
-<td class="gt_row gt_right" headers="Error">−1.78</td>
-<td class="gt_row gt_right" headers="Error porcentual">−47.84</td>
+<td class="gt_row gt_right" headers="Error">−0.02</td>
+<td class="gt_row gt_right" headers="Error porcentual">−0.41</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="Modelo">LM</td>
-<td class="gt_row gt_right" headers="Pronóstico">−0.63</td>
+<td class="gt_row gt_right" headers="Pronóstico">−0.60</td>
 <td class="gt_row gt_right" headers="Banxico">3.73</td>
-<td class="gt_row gt_right" headers="Error">−4.36</td>
-<td class="gt_row gt_right" headers="Error porcentual">−116.88</td>
+<td class="gt_row gt_right" headers="Error">−4.33</td>
+<td class="gt_row gt_right" headers="Error porcentual">−116.21</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="Modelo">NNETAR</td>
-<td class="gt_row gt_right" headers="Pronóstico">3.16</td>
+<td class="gt_row gt_right" headers="Pronóstico">2.95</td>
 <td class="gt_row gt_right" headers="Banxico">3.73</td>
-<td class="gt_row gt_right" headers="Error">−0.57</td>
-<td class="gt_row gt_right" headers="Error porcentual">−15.36</td>
+<td class="gt_row gt_right" headers="Error">−0.78</td>
+<td class="gt_row gt_right" headers="Error porcentual">−20.89</td>
 </tr>
 </tbody>
 </table>
@@ -2262,23 +2264,23 @@ Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
 </figcaption>
 <div aria-describedby="tbl-expectations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="fhqcojnxqa" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#fhqcojnxqa table {
+<div id="hypycxefcg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#hypycxefcg table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#fhqcojnxqa thead, #fhqcojnxqa tbody, #fhqcojnxqa tfoot, #fhqcojnxqa tr, #fhqcojnxqa td, #fhqcojnxqa th {
+#hypycxefcg thead, #hypycxefcg tbody, #hypycxefcg tfoot, #hypycxefcg tr, #hypycxefcg td, #hypycxefcg th {
   border-style: none;
 }
 
-#fhqcojnxqa p {
+#hypycxefcg p {
   margin: 0;
   padding: 0;
 }
 
-#fhqcojnxqa .gt_table {
+#hypycxefcg .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -2304,12 +2306,12 @@ Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
   border-left-color: #D3D3D3;
 }
 
-#fhqcojnxqa .gt_caption {
+#hypycxefcg .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#fhqcojnxqa .gt_title {
+#hypycxefcg .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2321,7 +2323,7 @@ Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
   border-bottom-width: 0;
 }
 
-#fhqcojnxqa .gt_subtitle {
+#hypycxefcg .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2333,7 +2335,7 @@ Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
   border-top-width: 0;
 }
 
-#fhqcojnxqa .gt_heading {
+#hypycxefcg .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2345,13 +2347,13 @@ Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
   border-right-color: #D3D3D3;
 }
 
-#fhqcojnxqa .gt_bottom_border {
+#hypycxefcg .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#fhqcojnxqa .gt_col_headings {
+#hypycxefcg .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2366,7 +2368,7 @@ Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
   border-right-color: #D3D3D3;
 }
 
-#fhqcojnxqa .gt_col_heading {
+#hypycxefcg .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2386,7 +2388,7 @@ Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
   overflow-x: hidden;
 }
 
-#fhqcojnxqa .gt_column_spanner_outer {
+#hypycxefcg .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2398,15 +2400,15 @@ Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
   padding-right: 4px;
 }
 
-#fhqcojnxqa .gt_column_spanner_outer:first-child {
+#hypycxefcg .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#fhqcojnxqa .gt_column_spanner_outer:last-child {
+#hypycxefcg .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#fhqcojnxqa .gt_column_spanner {
+#hypycxefcg .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2418,11 +2420,11 @@ Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
   width: 100%;
 }
 
-#fhqcojnxqa .gt_spanner_row {
+#hypycxefcg .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#fhqcojnxqa .gt_group_heading {
+#hypycxefcg .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2448,7 +2450,7 @@ Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
   text-align: left;
 }
 
-#fhqcojnxqa .gt_empty_group_heading {
+#hypycxefcg .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2463,15 +2465,15 @@ Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
   vertical-align: middle;
 }
 
-#fhqcojnxqa .gt_from_md > :first-child {
+#hypycxefcg .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#fhqcojnxqa .gt_from_md > :last-child {
+#hypycxefcg .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#fhqcojnxqa .gt_row {
+#hypycxefcg .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2490,7 +2492,7 @@ Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
   overflow-x: hidden;
 }
 
-#fhqcojnxqa .gt_stub {
+#hypycxefcg .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2503,7 +2505,7 @@ Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
   padding-right: 5px;
 }
 
-#fhqcojnxqa .gt_stub_row_group {
+#hypycxefcg .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2517,15 +2519,15 @@ Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
   vertical-align: top;
 }
 
-#fhqcojnxqa .gt_row_group_first td {
+#hypycxefcg .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#fhqcojnxqa .gt_row_group_first th {
+#hypycxefcg .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#fhqcojnxqa .gt_summary_row {
+#hypycxefcg .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2535,16 +2537,16 @@ Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
   padding-right: 5px;
 }
 
-#fhqcojnxqa .gt_first_summary_row {
+#hypycxefcg .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#fhqcojnxqa .gt_first_summary_row.thick {
+#hypycxefcg .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#fhqcojnxqa .gt_last_summary_row {
+#hypycxefcg .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2554,7 +2556,7 @@ Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
   border-bottom-color: #D3D3D3;
 }
 
-#fhqcojnxqa .gt_grand_summary_row {
+#hypycxefcg .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2564,7 +2566,7 @@ Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
   padding-right: 5px;
 }
 
-#fhqcojnxqa .gt_first_grand_summary_row {
+#hypycxefcg .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2574,7 +2576,7 @@ Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
   border-top-color: #D3D3D3;
 }
 
-#fhqcojnxqa .gt_last_grand_summary_row_top {
+#hypycxefcg .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2584,11 +2586,11 @@ Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
   border-bottom-color: #D3D3D3;
 }
 
-#fhqcojnxqa .gt_striped {
+#hypycxefcg .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#fhqcojnxqa .gt_table_body {
+#hypycxefcg .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2597,7 +2599,7 @@ Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
   border-bottom-color: #D3D3D3;
 }
 
-#fhqcojnxqa .gt_footnotes {
+#hypycxefcg .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2611,7 +2613,7 @@ Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
   border-right-color: #D3D3D3;
 }
 
-#fhqcojnxqa .gt_footnote {
+#hypycxefcg .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2620,7 +2622,7 @@ Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
   padding-right: 5px;
 }
 
-#fhqcojnxqa .gt_sourcenotes {
+#hypycxefcg .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2634,7 +2636,7 @@ Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
   border-right-color: #D3D3D3;
 }
 
-#fhqcojnxqa .gt_sourcenote {
+#hypycxefcg .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2642,63 +2644,63 @@ Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
   padding-right: 5px;
 }
 
-#fhqcojnxqa .gt_left {
+#hypycxefcg .gt_left {
   text-align: left;
 }
 
-#fhqcojnxqa .gt_center {
+#hypycxefcg .gt_center {
   text-align: center;
 }
 
-#fhqcojnxqa .gt_right {
+#hypycxefcg .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#fhqcojnxqa .gt_font_normal {
+#hypycxefcg .gt_font_normal {
   font-weight: normal;
 }
 
-#fhqcojnxqa .gt_font_bold {
+#hypycxefcg .gt_font_bold {
   font-weight: bold;
 }
 
-#fhqcojnxqa .gt_font_italic {
+#hypycxefcg .gt_font_italic {
   font-style: italic;
 }
 
-#fhqcojnxqa .gt_super {
+#hypycxefcg .gt_super {
   font-size: 65%;
 }
 
-#fhqcojnxqa .gt_footnote_marks {
+#hypycxefcg .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#fhqcojnxqa .gt_asterisk {
+#hypycxefcg .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#fhqcojnxqa .gt_indent_1 {
+#hypycxefcg .gt_indent_1 {
   text-indent: 5px;
 }
 
-#fhqcojnxqa .gt_indent_2 {
+#hypycxefcg .gt_indent_2 {
   text-indent: 10px;
 }
 
-#fhqcojnxqa .gt_indent_3 {
+#hypycxefcg .gt_indent_3 {
   text-indent: 15px;
 }
 
-#fhqcojnxqa .gt_indent_4 {
+#hypycxefcg .gt_indent_4 {
   text-indent: 20px;
 }
 
-#fhqcojnxqa .gt_indent_5 {
+#hypycxefcg .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -2715,46 +2717,46 @@ Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
 </thead>
 <tbody class="gt_table_body">
 <tr class="odd">
+<td class="gt_row gt_center" headers="Estadístico">Mínimo</td>
+<td class="gt_row gt_right" headers="MAE">0.40</td>
+<td class="gt_row gt_right" headers="RMSE">0.51</td>
+<td class="gt_row gt_right" headers="ME">−0.27</td>
+<td class="gt_row gt_right" headers="MPE">−73.18</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_center" headers="Estadístico">Primer cuartil</td>
+<td class="gt_row gt_right" headers="MAE">0.32</td>
+<td class="gt_row gt_right" headers="RMSE">0.42</td>
+<td class="gt_row gt_right" headers="ME">−0.09</td>
+<td class="gt_row gt_right" headers="MPE">−64.11</td>
+</tr>
+<tr class="odd">
 <td class="gt_row gt_center" headers="Estadístico">Media</td>
 <td class="gt_row gt_right" headers="MAE">0.31</td>
 <td class="gt_row gt_right" headers="RMSE">0.41</td>
 <td class="gt_row gt_right" headers="ME">−0.03</td>
-<td class="gt_row gt_right" headers="MPE">−56.89</td>
+<td class="gt_row gt_right" headers="MPE">−56.64</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_center" headers="Estadístico">Mediana</td>
 <td class="gt_row gt_right" headers="MAE">0.31</td>
 <td class="gt_row gt_right" headers="RMSE">0.41</td>
 <td class="gt_row gt_right" headers="ME">−0.04</td>
-<td class="gt_row gt_right" headers="MPE">−58.95</td>
+<td class="gt_row gt_right" headers="MPE">−58.69</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_center" headers="Estadístico">Máximo</td>
-<td class="gt_row gt_right" headers="MAE">0.37</td>
-<td class="gt_row gt_right" headers="RMSE">0.52</td>
-<td class="gt_row gt_right" headers="ME">0.24</td>
-<td class="gt_row gt_right" headers="MPE">−33.80</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_center" headers="Estadístico">Mínimo</td>
-<td class="gt_row gt_right" headers="MAE">0.40</td>
-<td class="gt_row gt_right" headers="RMSE">0.51</td>
-<td class="gt_row gt_right" headers="ME">−0.27</td>
-<td class="gt_row gt_right" headers="MPE">−73.22</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_center" headers="Estadístico">Primer cuartil</td>
-<td class="gt_row gt_right" headers="MAE">0.32</td>
-<td class="gt_row gt_right" headers="RMSE">0.42</td>
-<td class="gt_row gt_right" headers="ME">−0.09</td>
-<td class="gt_row gt_right" headers="MPE">−64.32</td>
-</tr>
-<tr class="even">
 <td class="gt_row gt_center" headers="Estadístico">Tercer cuartil</td>
 <td class="gt_row gt_right" headers="MAE">0.31</td>
 <td class="gt_row gt_right" headers="RMSE">0.41</td>
 <td class="gt_row gt_right" headers="ME">0.02</td>
-<td class="gt_row gt_right" headers="MPE">−52.42</td>
+<td class="gt_row gt_right" headers="MPE">−52.12</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_center" headers="Estadístico">Máximo</td>
+<td class="gt_row gt_right" headers="MAE">0.37</td>
+<td class="gt_row gt_right" headers="RMSE">0.52</td>
+<td class="gt_row gt_right" headers="ME">0.24</td>
+<td class="gt_row gt_right" headers="MPE">−33.32</td>
 </tr>
 </tbody>
 </table>
@@ -2765,6 +2767,10 @@ Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
 </figure>
 </div>
 </div>
+</section>
+<section id="conclusión" class="level2">
+<h2 class="anchored" data-anchor-id="conclusión">Conclusión</h2>
+<p>El mejor de los modelos que entrené resultó ser más preciso que la expectativa media de los analistas encuestados por Banco de México históricamente. En particular, el modelo NNETAR tuvo un error cuadrático medio de 0.31 en el periodo de prueba, mientras que la el promedio de los analistas tuvo un error cuadrático medio histórico de 0.41 puntos porcentuales.</p>
 </section>
 <section id="referencias" class="level2 unnumbered">
 
