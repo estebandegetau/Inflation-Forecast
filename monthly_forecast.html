@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.549">
+<meta name="generator" content="quarto-1.6.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -50,12 +50,12 @@ div.csl-indent {
 <script src="monthly_forecast_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="monthly_forecast_files/libs/quarto-html/anchor.min.js"></script>
 <link href="monthly_forecast_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="monthly_forecast_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="monthly_forecast_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="monthly_forecast_files/libs/quarto-html/quarto-syntax-highlighting-29e2c20b02301cfff04dc8050bf30c7e.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="monthly_forecast_files/libs/quarto-html/quarto-syntax-highlighting-dark-43df0d6f53b733b42d37fa7808e17715.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="monthly_forecast_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="monthly_forecast_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="monthly_forecast_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="monthly_forecast_files/libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="monthly_forecast_files/libs/bootstrap/bootstrap-d5ce786eb68fc388217f4307dbeb3d37.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="monthly_forecast_files/libs/bootstrap/bootstrap-dark-cc07a54ba1d115b207ff145c3c23010b.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 
 
 </head>
@@ -117,7 +117,7 @@ Nota
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Este reporte se actualizó por última vez el 09 abril 2024 a las 08:44 hrs CDMX.</p>
+<p>Este reporte se actualizó por última vez el 24 marzo 2025 a las 10:27 hrs CDMX.</p>
 </div>
 </div>
 <section id="modelos-univariados" class="level2 page-columns page-full">
@@ -126,10 +126,10 @@ Nota
 <p>En esta sección, comparamos los modelos ARIMA, ETS, LM, y NNETAR para predecir la inflación mensual en México.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> De estos, el modelo ARIMA es el más conocido y utilizado en la literatura. Los modelos ETS y LM son útiles por ser más simples. Por último, el modelo NNETAR es un modelo de redes neuronales para series de tiempo que ha demostrado ser útil en la predicción de series de tiempo <span class="citation" data-cites="allen2022">(<a href="#ref-allen2022" role="doc-biblioref">Allen 2022</a>)</span>.</p>
 <section id="probando-los-modelos" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="probando-los-modelos">Probando los modelos</h3>
-<p>Una manera de comparar distintos modelos de predicción es evaluar su precisión en un conjunto de datos externo; es decir, en un conjunto de datos que no se utilizó para ajustar los modelos <span class="citation" data-cites="hyndman2021 james2021a">(<a href="#ref-hyndman2021" role="doc-biblioref">Hyndman y Athanasopolous 2021</a>; <a href="#ref-james2021a" role="doc-biblioref">James et&nbsp;al. 2021</a>)</span>. En este caso, utilizamos los datos de inflación mensual desde enero 1994 hasta junio 2022 para ajustar los modelos y los datos desde julio 2022 hasta marzo 2024 para evaluar su precisión. La <a href="#fig-timeline" class="quarto-xref">Figura&nbsp;1</a> muestra la serie de tiempo de inflación mensual (mes con mes) y los periodos de entrenamiento y prueba.</p>
+<p>Una manera de comparar distintos modelos de predicción es evaluar su precisión en un conjunto de datos externo; es decir, en un conjunto de datos que no se utilizó para ajustar los modelos <span class="citation" data-cites="hyndman2021 james2021a">(<a href="#ref-hyndman2021" role="doc-biblioref">Hyndman y Athanasopolous 2021</a>; <a href="#ref-james2021a" role="doc-biblioref">James et&nbsp;al. 2021</a>)</span>. En este caso, utilizamos los datos de inflación mensual desde enero 1994 hasta abril 2024 para ajustar los modelos y los datos desde mayo 2024 hasta febrero 2025 para evaluar su precisión. La <a href="#fig-timeline" class="quarto-xref">Figura&nbsp;1</a> muestra la serie de tiempo de inflación mensual (mes con mes) y los periodos de entrenamiento y prueba.</p>
 <div class="cell page-columns page-full">
 <div class="cell-output-display page-columns page-full">
-<div id="fig-timeline" class="quarto-figure quarto-figure-center quarto-float anchored page-columns page-full">
+<div id="fig-timeline" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-timeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
 <img src="monthly_forecast_files/figure-html/fig-timeline-1.png" class="img-fluid figure-img column-page" width="6000">
@@ -144,7 +144,7 @@ Figura&nbsp;1: Línea de tiempo de entrenamiento, prueba y pronóstico
 <p>La <a href="#fig-test" class="quarto-xref">Figura&nbsp;2</a> muestra las predicciones de los modelos en el conjunto de prueba contra la inflación mensual observada. El modelo NNETAR parece ser el más preciso.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-test" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-test" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-test-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="monthly_forecast_files/figure-html/fig-test-1.png" class="img-fluid figure-img" width="4500">
@@ -605,15 +605,15 @@ Tabla&nbsp;1: Precisión de los modelos
 }
 </style>
 
-<div id="tbl-comp-1" class="gt_table do-not-create-environment quarto-float anchored" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<div id="tbl-comp-1" class="gt_table do-not-create-environment quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <figure class="quarto-float quarto-subfloat-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-comp-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (a) Muestra de entrenamiento
 </figcaption>
 <div aria-describedby="tbl-comp-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table id="tbl-comp-1" class="gt_table do-not-create-environment table" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table id="tbl-comp-1" class="gt_table do-not-create-environment caption-top table" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
-<tr class="header gt_col_headings">
+<tr class="gt_col_headings header">
 <th id="Modelo" class="gt_col_heading gt_columns_bottom_border gt_left" style="text-align: left;" data-quarto-table-cell-role="th" scope="col">Modelo</th>
 <th id="ME" class="gt_col_heading gt_columns_bottom_border gt_right" style="text-align: left;" data-quarto-table-cell-role="th" scope="col">ME</th>
 <th id="RMSE" class="gt_col_heading gt_columns_bottom_border gt_right" style="text-align: left;" data-quarto-table-cell-role="th" scope="col">RMSE</th>
@@ -1100,15 +1100,15 @@ Tabla&nbsp;1: Precisión de los modelos
 }
 </style>
 
-<div id="tbl-comp-2" class="gt_table do-not-create-environment quarto-float anchored" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<div id="tbl-comp-2" class="gt_table do-not-create-environment quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <figure class="quarto-float quarto-subfloat-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-comp-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (b) Muestra de prueba
 </figcaption>
 <div aria-describedby="tbl-comp-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table id="tbl-comp-2" class="gt_table do-not-create-environment table" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table id="tbl-comp-2" class="gt_table do-not-create-environment caption-top table" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
-<tr class="header gt_col_headings">
+<tr class="gt_col_headings header">
 <th id="Modelo" class="gt_col_heading gt_columns_bottom_border gt_left" style="text-align: left;" data-quarto-table-cell-role="th" scope="col">Modelo</th>
 <th id="ME" class="gt_col_heading gt_columns_bottom_border gt_right" style="text-align: left;" data-quarto-table-cell-role="th" scope="col">ME</th>
 <th id="RMSE" class="gt_col_heading gt_columns_bottom_border gt_right" style="text-align: left;" data-quarto-table-cell-role="th" scope="col">RMSE</th>
@@ -1161,14 +1161,14 @@ Tabla&nbsp;1: Precisión de los modelos
 </section>
 <section id="pronóstico-ex-ante" class="level3">
 <h3 class="anchored" data-anchor-id="pronóstico-ex-ante">Pronóstico ex-ante</h3>
-<p>Sabiendo cuán precisos son los modelos, procedo a pronosticar la inflación mensual en México desde abril 2024 hasta diciembre 2025. Solo para fines comparativos, utilizaré todos los modelos aunque el mejor fue indiscutiblemente NNETAR.</p>
-<p>La <a href="#fig-forecast" class="quarto-xref">Figura&nbsp;3</a> muestra los pronósticos de los modelos para los siguientes 21 meses. Algo importante para notar es que el modelo NNETAR (<a href="#fig-forecast-4" class="quarto-xref">Figura&nbsp;3 (d)</a>) no produce intervalos de confianza, puesto que las predicciones por redes neuronales pierden interpretabilidad y no permiten tener una medida de la varianza de la predicción.</p>
+<p>Sabiendo cuán precisos son los modelos, procedo a pronosticar la inflación mensual en México desde marzo 2025 hasta diciembre 2025. Solo para fines comparativos, utilizaré todos los modelos aunque el mejor fue indiscutiblemente NNETAR.</p>
+<p>La <a href="#fig-forecast" class="quarto-xref">Figura&nbsp;3</a> muestra los pronósticos de los modelos para los siguientes 10 meses. Algo importante para notar es que el modelo NNETAR (<a href="#fig-forecast-4" class="quarto-xref">Figura&nbsp;3 (d)</a>) no produce intervalos de confianza, puesto que las predicciones por redes neuronales pierden interpretabilidad y no permiten tener una medida de la varianza de la predicción.</p>
 <div id="fig-forecast" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-forecast-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-layout-row">
 <div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-forecast" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-forecast-1" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-forecast-1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-forecast-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="monthly_forecast_files/figure-html/fig-forecast-1.png" class="img-fluid figure-img" data-ref-parent="fig-forecast" width="2500">
@@ -1180,7 +1180,7 @@ Tabla&nbsp;1: Precisión de los modelos
 </div>
 </div>
 <div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-forecast" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-forecast-2" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-forecast-2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-forecast-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="monthly_forecast_files/figure-html/fig-forecast-2.png" class="img-fluid figure-img" data-ref-parent="fig-forecast" width="2500">
@@ -1194,7 +1194,7 @@ Tabla&nbsp;1: Precisión de los modelos
 </div>
 <div class="quarto-layout-row">
 <div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-forecast" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-forecast-3" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-forecast-3" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-forecast-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="monthly_forecast_files/figure-html/fig-forecast-3.png" class="img-fluid figure-img" data-ref-parent="fig-forecast" width="2500">
@@ -1206,7 +1206,7 @@ Tabla&nbsp;1: Precisión de los modelos
 </div>
 </div>
 <div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-forecast" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-forecast-4" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-forecast-4" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-forecast-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="monthly_forecast_files/figure-html/fig-forecast-4.png" class="img-fluid figure-img" data-ref-parent="fig-forecast" width="2500">
@@ -1227,7 +1227,7 @@ Figura&nbsp;3: Pronósticos ex-ante de inflación mensual
 <p>Una manera de evaluar la precisión de los pronósticos ex-ante es con respecto a la encuesta de expectativas de inflación mensual del Banco de México <span class="citation" data-cites="banxico_sie">(<a href="#ref-banxico_sie" role="doc-biblioref">Banco de México s.&nbsp;f.</a>)</span>. La <a href="#fig-banxico" class="quarto-xref">Figura&nbsp;4</a> muestra los pronósticos de los modelos para los siguientes 12 meses y los compara con la media de las respuestas de la encuesta. Ninguno de los modelos que entrené se ajusta perfectamente al promedio de las expectativas, pero NNETAR y ETS están muy cerca.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-banxico" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-banxico" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-banxico-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="monthly_forecast_files/figure-html/fig-banxico-1.png" class="img-fluid figure-img" width="4500">
@@ -1242,7 +1242,7 @@ Figura&nbsp;4: Pronóstico de inflación mensual a doce meses vs media de encues
 <p>La <a href="#tbl-banxico" class="quarto-xref">Tabla&nbsp;2</a> muestra la precisión de los modelos en la muestra completa respecto a la media de las expectativas de los analistas de Banxico. Es importante notar que el mejor modelo en nuestras pruebas (NNETAR) no es el que resultó estar más cerca del promedio de los analistas. Sin embargo, esto obliga hacer la pregunta ¿qué tan preciso puede ser el proimedio de analistas para predecir la inflación? La <a href="#sec-survey" class="quarto-xref">Sección&nbsp;2</a> busca responder esta pregunta.</p>
 <p>Otra manera de medir la precisión del pronóstico es comparando la inflaicón anual para 2025 con la media de las expectativas de los analistas de Banxico. La <a href="#tbl-yearly" class="quarto-xref">Tabla&nbsp;3</a> muestra que el modelo NNETAR tuvo una predicción muy cercana a la expectativa promedio de los analistas de Banxico.</p>
 <div class="cell">
-<div id="tbl-banxico" class="cell quarto-float anchored">
+<div id="tbl-banxico" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-banxico-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media de analistas Banxico
@@ -1690,9 +1690,9 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
 }
 </style>
 
-<table class="gt_table do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table do-not-create-environment cell caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
-<tr class="header gt_col_headings">
+<tr class="gt_col_headings header">
 <th id="Modelo" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Modelo</th>
 <th id="ME" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">ME</th>
 <th id="RMSE" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">RMSE</th>
@@ -1739,7 +1739,7 @@ Tabla&nbsp;2: Precisión de los modelos en la muestra completa respecto la media
 </div>
 </div>
 <div class="cell">
-<div id="tbl-yearly" class="cell quarto-float anchored">
+<div id="tbl-yearly" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-yearly-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto a encuesta de expectativas Banxico
@@ -2187,9 +2187,9 @@ Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto
 }
 </style>
 
-<table class="gt_table do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table do-not-create-environment cell caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
-<tr class="header gt_col_headings">
+<tr class="gt_col_headings header">
 <th id="Modelo" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Modelo</th>
 <th id="Pronóstico" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Pronóstico</th>
 <th id="Banxico" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Banxico</th>
@@ -2243,7 +2243,7 @@ Tabla&nbsp;3: Precisión de los pronósticos para inflación anual 2025 respecto
 <p>La <a href="#fig-expectations" class="quarto-xref">Figura&nbsp;5</a> muestra que las predicciones intercuartílicas (primer cuatil, media, mediana, y tercer cuartil) tienen aproximadamente la misma capacidad predictiva a lo largo de todo el horizonte de predicción (de cero a doce meses de anticipación). Es importante destacar que los errores absolutos (MAE y RMSE) son no monotónicos; es decir,. las mejores predicciones son con anticipaciones cercanas a cero y a doce meses. Las peores predicciones son a seis meses de anticipación.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-expectations" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-expectations" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-expectations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="monthly_forecast_files/figure-html/fig-expectations-1.png" class="img-fluid figure-img" width="4500">
@@ -2257,7 +2257,7 @@ Figura&nbsp;5: Precisión de la encuesta de expectativas Banxico
 </div>
 <p>La <a href="#tbl-expectations" class="quarto-xref">Tabla&nbsp;4</a> muestra que las predicciones intercuartílicas tienen un error cuadrático histórico de 0.41 puntos porcentuales. Al comparar con los errores de mis modelos en la <a href="#tbl-comp-2" class="quarto-xref">Tabla&nbsp;1 (b)</a>, el modelo NNETAR tuvo mejor desempeño que el histórico de los analistas.</p>
 <div class="cell">
-<div id="tbl-expectations" class="cell quarto-float anchored">
+<div id="tbl-expectations" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-expectations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
@@ -2705,9 +2705,9 @@ Tabla&nbsp;4: Precisión histórica de la encuesta de expectativas Banxico
 }
 </style>
 
-<table class="gt_table do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table do-not-create-environment cell caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
-<tr class="header gt_col_headings">
+<tr class="gt_col_headings header">
 <th id="Estadístico" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Estadístico</th>
 <th id="MAE" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">MAE</th>
 <th id="RMSE" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">RMSE</th>
@@ -2990,18 +2990,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -3033,7 +3022,45 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -3068,7 +3095,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');
@@ -3116,7 +3147,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {

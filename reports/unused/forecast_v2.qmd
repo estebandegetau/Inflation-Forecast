@@ -1,7 +1,7 @@
 ---
 title: "Pronóstico de inflación"
 author: "Esteban Degetau"
-date: "`r Sys.Date()`"
+date: today
 format: html
 execute:
     echo: false
