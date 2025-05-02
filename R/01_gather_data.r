@@ -128,6 +128,56 @@ summarise(
 
 #---- IMSS ---------------------------------------------------------------------
 
+
+
+pacman::p_load(RODBC, tidyverse)
+
+ 
+conn <- odbcDriverConnect('driver={SQL Server};server=CPE-SQL2005\\SVR_SQL2008R2;database=Indicadores_DIR;trusted_connection=true')
+
+customers <- sqlQuery(conn, 'select * from otros.tiempo')
+
+glimpse(customers)
+
+tables <- sqlTables(conn)
+
+view(tables)
+
+
+
+
+SBC <- sqlFetch(conn, "OTROS.SBC") 
+TIEMPO <- sqlFetch(conn, "OTROS.TIEMPO")
+
+employment <- SBC |>
+#  filter(cve_modalidad %in% c(10, 13, 14, 17, 34, 36, 38, 42)) |>
+  left_join(TIEMPO) |>
+  group_by(fecha = ym(aniomes)) |>
+  summarise(empleo = sum(numero_cotizantes))
+
+glimpse(employment)
+
+employment |> slice_max(fecha)
+
+SBC |>
+  slice_max(cve_tiempo) |>
+  pull(cve_modalidad) |>
+  table()
+
+
+employment |>
+  ggplot(aes(x = fecha, y = empleo)) +
+  geom_line() +
+  labs(
+    x = "Fecha",
+    y = "Empleo formal",
+    title = "Empleo formal en México",
+    subtitle = "Número de cotizantes al IMSS",
+    caption = "Fuente: IMSS"
+  )
+
+SBC |> slice_max(cve_tiempo)
+
 jobs <- read_csv(here("data/empleo.csv"), skip = 2, 
                  col_names = c("fecha", "valor"),
                  locale = locale("es"),

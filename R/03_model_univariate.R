@@ -40,7 +40,10 @@ last_obs <- inputs |>
 
 #---- Predict months -----------------------------------------------------------
 
-predict_months <- seq(last_obs + months(1), ym(202512), by = "month")
+
+next_year <- ceiling_date(today() + years(1), "year") - months(1)
+
+predict_months <- seq(last_obs + months(1), next_year, by = "month")
 
 h <- length(predict_months)
 

@@ -39,7 +39,7 @@ execute:
     echo: false
     warning: false
     freeze: auto
-    cache: true
+    cache: false
 lang: es
 toc: false
 bibliography: references.bib
@@ -87,7 +87,7 @@ updated_month <- updated_data |> month()
 month_day <- today() |> day()
 month <- today() |> month()
 
-if(month > updated_month & month_day >= 9) {
+if(month > updated_month) {
 
     source(here::here("R/00_run.R"))
 
